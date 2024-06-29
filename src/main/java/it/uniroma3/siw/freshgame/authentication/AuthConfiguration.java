@@ -1,5 +1,4 @@
-/*package it.uniroma3.siw.authentication;
-
+/*package it.uniroma3.siw.freshgame.authentication;
 import static it.uniroma3.siw.model.Credential.ADMIN_ROLE;
 
 import javax.sql.DataSource;

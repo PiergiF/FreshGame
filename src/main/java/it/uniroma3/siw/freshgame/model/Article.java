@@ -1,13 +1,16 @@
 package it.uniroma3.siw.freshgame.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Article {
 
@@ -21,10 +24,13 @@ public class Article {
     @NotBlank
     private String body;
     
-    @OneToMany
+    @ManyToOne
     private Game game;
 
-    
+    @ManyToOne
+    private Journalist journalist;
+
+
     public Long getId() {
         return id;
     }
@@ -63,6 +69,14 @@ public class Article {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public Journalist getJournalist() {
+        return journalist;
+    }
+
+    public void setJournalist(Journalist journalist) {
+        this.journalist = journalist;
     }
 
 }
