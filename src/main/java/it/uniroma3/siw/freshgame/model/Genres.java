@@ -16,5 +16,6 @@ public enum Genres {
     ARCADE,
     MOBA,
     OPEN_WORLD,
+    LIVE_SERVICE;
 
 }

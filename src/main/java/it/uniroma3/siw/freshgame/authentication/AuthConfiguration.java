@@ -1,5 +1,6 @@
-/*package it.uniroma3.siw.freshgame.authentication;
-import static it.uniroma3.siw.model.Credential.ADMIN_ROLE;
+package it.uniroma3.siw.freshgame.authentication;
+import static it.uniroma3.siw.freshgame.model.Credentials.EDITOR_ROLE;
+import static it.uniroma3.siw.freshgame.model.Credentials.JOURNALIST_ROLE;
 
 import javax.sql.DataSource;
 
@@ -51,19 +52,24 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
                 .authorizeHttpRequests()
 //                .requestMatchers("/**").permitAll()
                 // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                .requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico").permitAll()
+                .requestMatchers(HttpMethod.GET,"/", "/loginPage","/registrationPage", "/search", "/all/**", "/css/**", "/images/**", "/javascript/**", "favicon.ico").permitAll()
         		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
-                .requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
-                .requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
-                .requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST,"/registrationData", "/loginPage").permitAll()
+                .requestMatchers(HttpMethod.GET, "/journalist/**").hasAnyAuthority(JOURNALIST_ROLE)
+                .requestMatchers(HttpMethod.POST, "/journalist/**").hasAnyAuthority(JOURNALIST_ROLE)
+                .requestMatchers(HttpMethod.GET,"/editor/**").hasAnyAuthority(EDITOR_ROLE)
+                .requestMatchers(HttpMethod.POST,"/editor/**").hasAnyAuthority(EDITOR_ROLE)
         		// tutti gli utenti autenticati possono accere alle pagine rimanenti 
-                .anyRequest().authenticated()
+                //.anyRequest().authenticated()
+
+                .anyRequest().permitAll()
+
                 // LOGIN: qui definiamo il login
                 .and().formLogin()
-                .loginPage("/login")
+                .loginPage("/loginPage")
                 .permitAll()
-                .defaultSuccessUrl("/success", true)
-                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/loginPage?error=true")
                 // LOGOUT: qui definiamo il logout
                 .and()
                 .logout()
@@ -77,4 +83,4 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
                 .clearAuthentication(true).permitAll();
         return httpSecurity.build();
     }
-}*/
+}

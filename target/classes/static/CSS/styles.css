@@ -1,140 +1,419 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+/*#### general ####*/
+    body {
+        padding-top: 70px; /* Spazio per il header fisso */
+    }
+
+    body.backgroundColorSite {
+        background-color: #907396; /* Colore uniforme di sfondo */
+        /*background-color: #3f2e56;*/
+        color: white;
+    }
+
+    .text-white {
+        color: white !important;
+    }
+
+    .custom-link {
+        /*color: #453F78;*/
+        color: #9da2ab;
+    }
+    .custom-link:hover{
+        text-decoration: none;
+        /*color: #453F60;*/
+        /*color: #907396;*/
+        color: #401F3E;
+    }
+
+    .btn-confirm-custom {
+        background-color: #453F78 !important;
+        border: none !important;
+        color: white !important;
+    }
+
+    /*#### Javascript ####*/
+    .referenceForJSClone{
+        display: none;
+    }
+
+/*#### Header site ####*/
+
+    /* main container */
+    .header_navbar {
+        border-bottom: 1px solid #d1d1d1;
+        display: flex;
+        justify-content: space-around;
+
+        /*justify-content: space-between;*/
+
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1030; /* Più alto di altri elementi della pagina */
+        background-color:#401F3E;
+
+        /*padding: 0 20px;*/
+
+    }
+
+    #header_logo_name{
+        padding-left: 200px;
+    }
+
+    .header_navbar a{
+        text-decoration: none;
+        color: currentColor;
+    }
+
+    /*### Header site logo ###*/
+    .header_logo {
+        height: 70px;
+    }
+
+    .header_logo_name{
+        height: 40px;
+        /*margin: auto; /* Centratura automatica 
+        justify-content: center;*/
+    }
+
+    /* Centratura del logo */
+    .logo-name-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+/*### Header search & login ###*/
+
+    .search-login-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input{
+        width: 200px;
+        height: 40px;
+        margin-right: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid white;
+        /*border: 1px solid rgb(153, 153, 153);*/
+        border-radius: 8px;
+        background-color: transparent;
+        color: white;
+        outline: none;
+    }
+
+    .search-input::placeholder{
+        color: white;
+    }
+
+    .btn-login-custom{
+        /*background-color: #453F78 !important;
+        border: none !important;*/
+        /*border: 1px solid white !important;*/
+        border: 1px solid #453F78 !important;
+        height: 40px !important;
+        align-items: center;
+    }
+
+    .btn-login-custom:hover{
+        /*background-color: #453F60 !important;*/
+        background-color: #453F78 !important;
+        /*border: none !important;*/
+        color: white !important;
+    }
+
+    .btn-logout-custom{
+        border: 1px solid red !important;
+        height: 40px !important;
+        align-items: center;
+        margin-left: 10px;
+    }
+    .btn-logout-custom:hover{
+        background-color: red;
+        color: white !important;
+    }
+
+
+
+/*#### Login page ####*/
+    body.login-background {
+        /*background-image: url(/images/background/pizza.jpeg);*/
+        background-color: #907396;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        /*transition: background-image 0.3s ease-in-out; /* serve davvero? */
+    }
+
+    .loginRegistrationDiv{
+        background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+    .form-signin .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+
+
+/*#### Registration Page ####*/
+    .loginRegistrationDiv{
+        background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+    }
+
+
+
+
+
+
+/*#### Navbar ####*/
+
+.container-navbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #401F3E;
+    /*border-bottom: 1px solid #d1d1d1;
+    padding: 0;*/
+}
+
+/*
+.navbar {
+    /*
+    display: flex;
+    justify-content: center;
+    background-color: #401F3E;
+    border-bottom: 1px solid #d1d1d1;
+    
+    margin: auto;
     padding: 0;
-    background-color: #111;
-    color: #fff;
 }
 
-a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-}
-
-.top-bar {
-    background-color: #000;
-    padding: 20px 0;
-}
-
-.top-bar .logo img {
-    max-height: 50px;
-}
-
-.header-links {
-    text-align: right;
-}
-
-.header-links a {
-    margin-left: 20px;
-}
-
-.main-nav {
-    background-color: #222;
-    padding: 10px 0;
-}
-
-.main-nav ul {
+.navbar-nav {
+    
+    display: flex;
     list-style: none;
-    display: flex;
-    justify-content: center;
-    margin: 0;
     padding: 0;
-}
-
-.main-nav ul li {
-    margin: 0 20px;
-}
-
-.main-nav ul li a {
-    padding: 10px 20px;
-    display: block;
-}
-
-.hero-section {
-    background: url('hero-bg.jpg') no-repeat center center/cover;
-    padding: 100px 0;
-    text-align: center;
-}
-
-.hero-content h1 {
-    font-size: 3em;
     margin: 0;
 }
+*/
 
-.featured-games, .latest-posts {
-    padding: 40px 0;
+
+.nav-item {
+    margin: 0 15px;
 }
 
-.featured-games h2, .latest-posts h2 {
-    text-align: center;
-    margin-bottom: 20px;
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    /*padding: 15px 0;*/
 }
 
-.game-news, .latest-posts {
-    padding: 40px 0;
+.nav-link:hover {
+    text-decoration: underline;
 }
 
-.game-news h2, .latest-posts h2 {
-    text-align: center;
-    margin-bottom: 20px;
+/*
+.dropdown-menu {
+    background-color: #401F3E;
+    border: none;
 }
 
-.game-cards, .post-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.dropdown-item {
+    color: white;
 }
 
-.game-card, .post-card {
-    background-color: #222;
-    margin: 10px;
-    padding: 20px;
-    flex: 1 1 calc(33.333% - 40px);
-    box-sizing: border-box;
-    text-align: center;
+.dropdown-item:hover {
+    background-color: #453F78;
+    color: white;
 }
+*/
 
-.game-card img, .post-card img {
+
+/*### Header account drop down menu ###*/
+
+        /* Stili di base per il menu */
+        .header_account_menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .header_account_menu > li {
+            position: relative;
+        }
+
+        .header_account_dropDownMenu {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            position: absolute;
+            top: 100%;
+            left: -30px;
+
+            background-color: #453F78;
+            background-color: #401F3E;
+            background-color: #907396;
+
+            border-radius: 8px; /* Bordi arrotondati */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
+            /*display: none; /* Nasconde il menu */
+            opacity: 0; /* Imposta opacità a 0 per animazione */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Animazione di transizione */
+            transform: translateY(-10px); /* Sposta leggermente verso l'alto per animazione */
+            z-index: 1000; /* Imposta l'indice z per il menu a tendina */
+        }
+
+        .header_account_menu > li:hover .header_account_dropDownMenu {
+            display: block; /* Mostra il menu al passaggio del mouse */
+            opacity: 1; /* Imposta opacità a 1 per animazione */
+            transform: translateY(0); /* Ripristina la posizione per animazione */
+        }
+
+        .header_account_dropDownMenu li {
+            padding: 10px;
+        }
+
+        .header_account_dropDownMenu li a {
+            text-decoration: none; /* Rimuove la sottolineatura */
+            /*color: #333; /* Colore del testo */
+            color: white;
+
+            display: block; /* Imposta l'ancora come blocco */
+            transition: background-color 0.3s, color 0.3s; /* Animazione di transizione per colore e sfondo */
+        }
+
+        .header_account_dropDownMenu li a:hover {
+            /*background-color: #f0f0f0;*/ /* Colore di sfondo al passaggio del mouse */
+            /*color: #007bff;*/ /* Colore del testo al passaggio del mouse */
+
+            /*background-color: rgb(223,205,54);
+            color: white;
+            */
+            color: #401F3E;
+            /*color: #453F78;*/
+            /*color: #907396;*/
+            /*border-radius: 5px;*/ /* Bordi arrotondati */
+        }
+
+        #logout:hover {
+            color: red;
+            /*color: white;*/
+            /*border-radius: 5px;*/ /* Bordi arrotondati */
+        }
+
+
+        .header_account_dropDownMenu form {
+            margin: 0;
+        }
+
+        .header_account_dropDownMenu form input[type="submit"]:hover {
+            background-color: #f0f0f0;
+            color: #007bff;
+        }
+
+
+/*#### Form ####*/
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+    .form-signin .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+
+    .form-control {
+        margin-bottom: 1rem;
+    }
+
+
+    .form-control-file {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        color: white;
+    }
+
+/*#### News page ####*/
+
+    .game-news, .latest-posts {
+        padding: 40px 0;
+    }
+
+    .game-news h2, .latest-posts h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .game-cards, .post-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .game-card, .post-card {
+        background-color: #453F78;
+        margin: 10px;
+        padding: 20px;
+        flex: 1 1 calc(33.333% - 40px);
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .game-card img, .post-card img {
     max-width: 100%;
     height: auto;
-}
+    }
 
-footer {
-    background-color: #000;
-    padding: 20px 0;
-    text-align: center;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.footer-section {
-    flex: 1 1 30%;
-    padding: 10px;
-}
-
-.footer-section h3 {
-    border-bottom: 1px solid #555;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-section ul li {
-    margin-bottom: 10px;
-}
-
+    .newsPageImageMiniature{
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: cover;
+    }

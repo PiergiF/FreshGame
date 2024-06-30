@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <!--fac simile-->
+        <div class="referenceForJSClone">
+            <span id="tagReference" class="mb-3">
+                <select th:field="${newArticle.tags}" class="form-control d-inline-block" style="width: auto;" required>
+                    <option value="" selected disabled>Seleziona il tag</option>
+                    <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag}"></option>
+                </select>
+                <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
+            </span>
+        </div>
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a href="#">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recensioni</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Scrivi un nuovo Articolo</h1>
+            <h6 class="text-center" th:if="${param.error != null}" style="color: red">Errore nella creazione dell'articolo</h6>
+            <form th:action="@{/journalist/articleData}" th:object="${newArticle}" method="POST" id="formNewArticle" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Titolo Articolo:</label>
+                    <input type="text" id="title" name="title" th:field="${newArticle.title}" class="form-control" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="images">Carica Immagini:</label>
+                    <input type="file" id="images" name="images" class="form-control-file" multiple required>
+                    <h6 class="text-center" th:if="${param.errorImage != null}" style="color: red">Errore nel caricamento delle immagini</h6>
+                </div>
+
+                <div th:switch="${accountRole}" class="form-group">
+                    <label for="journalist">Giornalista:</label>
+
+                    <select th:case=" 'JOURNALIST' " th:field="${newArticle.journalist}" disabled class="disabledJournalistChoise form-control">
+                        <option th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}" selected>_JournalistName&Surname_</option>
+                        <input type="hidden" id="journalist" name="journalist" th:value="${journalist.id}"/>
+                    </select>
+
+                    <!--
+                    <select th:case=" 'ADMINISTRATOR' " th:field="${recipe.chef}" class="form-control" required>
+                        <option value="" selected disabled>Seleziona uno chef</option>
+                        <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}">_ChefName&Surname_</option>
+                    </select>
+                    -->
+                    
+                </div>
+
+                <div class="form-group">
+                    <label>Data:</label>
+                    <input type="date" id="date" name="date" th:value="${date}" class="form-control" required disabled/>
+                    <input type="hidden" id="date" name="date" th:value="${date}">
+                </div>
+
+                <div class="form-group">
+                    <label for="tagArticle">Tag:</label>
+                    <div id="tagsContainer">
+                        <span class="mb-3">
+                            <select th:field="${newArticle.tags}" class="form-control d-inline-block" style="width: auto;" required> <!--style="width: auto;"-->
+                                <option value="" selected disabled>Seleziona il tag</option>
+                                <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag}"></option>
+                            </select>
+                            <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
+                        </span>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm btn-spacing" onclick="addTagField()">Aggiungi Tag</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameArticle">Riguardo al Gioco:</label>
+                    <select id="game" name="game" class="form-control" required> <!--th:field="${newArticle.game}"-->
+                        <option value="" selected disabled>Seleziona un Gioco</option>
+                        <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="introduction">Introduzione:</label>
+                    <textarea id="introduction" name="introduction" th:field="${newArticle.introduction}" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="body">Corpo dell'articolo:</label>
+                    <textarea id="body" name="body" th:field="${newArticle.body}" class="form-control"></textarea>
+                </div>
+
+                <!--
+                <div class="form-group">
+                    <label th:text="#{ingredients} + ':'">_Ingredients_</label>
+                    <div id="ingredientsContainer">
+                        <div id="ingredients" class="mb-3">
+                            <span>
+                                <select class="form-control d-inline-block" name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" style="width: auto;" required>
+                                    <option value="" selected disabled>Seleziona un ingrediente</option>
+                                    <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
+                                    <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
+                                </select>
+                            </span>
+
+                            
+                            <input type="number" name="quantities" class="form-control d-inline-block" th:placeholder="#{quantity}" style="width: auto;" required/>
+
+                            <span>
+                                
+                                <select class="form-control d-inline-block" name="unitsName" id="unitSelect" onchange="addNewUnit(this)" style="width: auto;" required>
+                                    <option value="" selected disabled>Seleziona un'unità</option>
+                                    <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
+                                    <option value="add" id="addUnitOption">_AggiungiUnit_</option>
+                                </select>
+                            </span>
+
+                            <button type="button" class="btn btn-danger" onclick="removeIngredientField(this)" th:text="#{removeIngredient}">_Remove_</button>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm btn-spacing" onclick="addIngredientField()" th:text="#{addIngredient}">_AddIngredient_</button>
+                <br/><br/>
+
+                <div class="form-group">
+                    <label for="description" th:text="#{recipeDescription} + ':' ">_recipeDescription_</label>
+                    <textarea id="description" name="description" th:field="${recipe.description}" class="form-control"></textarea>
+                </div>
+                -->
+                <button type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
+            </form>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+        <!--<script th:inline="javascript" src="/javascript/script.js"></script>-->
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+
+    <body class="login-background">
+
+        <header class="header_navbar">
+            <a href="/"><img src="/images/logo/logo.png" class="header_logo" alt="Logo"/></a>
+        </header>
+
+        <div class="loginRegistrationDiv">
+            <form class="form-signup" th:action="@{/registrationData}" method="post">
+
+                <h1 class="h3 mb-3 font-weight-normal text-center text-white">Registrati</h1>
+
+                <div>
+                    <label class="sr-only" >Name</label>
+                    <input type="text" name="name" class="form-control mb-3 inputRegistration" placeholder="Nome"/>
+                </div>
+                    
+                <div>
+                    <label class="sr-only">Surname</label>
+                    <input type="text" name="surname" class="form-control mb-3 inputRegistration" placeholder="Cognome"/>
+                </div>
+
+                <div>
+                    <label class="sr-only">GamerTag</label>
+                    <input type="text" name="gamertag" class="form-control mb-3" placeholder="Gamertag"/>
+                </div>
+
+                <div>
+                    <label class="sr-only">Your Username</label>
+                    <input type="text" th:field="${credentials.username}" class="form-control mb-3" placeholder="Username" required autofocus/>
+                    <span th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" th:style="'color:red'"></span>
+                </div>
+
+                <div>
+                    <label class="sr-only">Insert Password</label>
+                    <input type="password" th:field="${credentials.password}" class="form-control mb-3" placeholder="Password" required/>
+                    <span th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" th:style="'color:red'"></span>
+                </div>
+
+                <!--
+                <div class="mb-3" id="chooseRoleRegistration">
+                    <label class="d-block text-white">Registrati come:</label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="customerRole" name="role" value="CUSTOMER" class="custom-control-input" checked onclick="updateRegistrationForm(this)">
+                        <label class="custom-control-label text-white" for="customerRole">Customer</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="chefRole" name="role" value="CHEF" class="custom-control-input" onclick="updateRegistrationForm(this)">
+                        <label class="custom-control-label text-white" for="chefRole">Chef</label>
+                    </div>
+                </div>
+                -->
+                
+                
+                <button type="submit" id="registrationButton" class="btn btn-lg btn-primary btn-block custom-btn">Registrati</button>
+
+                <p class="mt-2 text-center" id="loginLink">
+                    <span class="text-white"> Hai gia' un account? </span>
+                    <a href="/loginPage" class="custom-link">Accedi</a>
+                </p>
+
+            </form>
+        </div>
+
+    </body>
+</html>

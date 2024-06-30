@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
+
+            <!--
+            <div class="container-navbar">
+            <a href="/" class="logo-container"><img src="/images/logo/logo.png" class="header_logo" alt="Logo"/></a>
+
+            
+            <a href="#">Giochi</a> <!--class="nav-item nav-link link-body-emphasis active" 
+            <a href="#">Guide</a> <!--class="nav-item nav-link link-body-emphasis active"
+            <a href="#">Recensioni</a> <!--class="nav-item nav-link link-body-emphasis active"
+            <a href="#">Piattaforme</a>
+            <a href="#">Generi</a>
+            </div>
+            -->
+
+            <!--
+            <div class="search-login-container">
+                <form action="/search" method="get"> <!--class="search-container"
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+                <a th:if="${accountRole != 'ROLE_ANONYMOUS'}" class="btn btn-login-custom" th:text="${userDetails.username}">_Username_</a>
+                <!--<a th:if="${accountRole != 'ROLE_ANONYMOUS'}" href="/logout" class="btn btn-logout-custom" id="btn-logout-custom">Logout</a>-
+            </div>
+            -->
+
+            <!--
+            <div class="search-login-container">
+                <form action="/search" method="get"> <!--class="search-container"
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+                <div th:if="${accountRole != 'ROLE_ANONYMOUS'}" class="dropdown">
+                    <a href="#" class="btn btn-login-custom dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${userDetails.username}">_Username_</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="/settings">Settings</a>
+                        <a class="dropdown-item" href="/reviews">Le mie recensioni</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a href="#">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recensioni</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        
+        <div class="container-navbar nav-scroller py-1 mb-3 border-bottom" style="background-color: #401F3E;">
+            <nav class="nav nav-underline justify-content-between">
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Guide</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Giochi</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Generi</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>
+            </nav>
+        </div>
+        <main>
+            <section class="game-news">
+                <div class="container">
+                    <h2>Game News</h2>
+                    <div class="game-cards">
+                        <div th:each="article : ${articles}" class="game-card">
+                            <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " class="newsPageImageMiniature" alt="${article.title}">
+                            <h3 th:text="${article.introduction}">_introduction_</h3>
+                            <span th:text="${article.date}">_date_</span>
+                            <span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname}">_journalistName&Surname_</span> <!--da far diventare collegamenti-->
+                            <span th:text="${article.game.name}">_nameGame_</span> <!--da far diventare collegamenti-->
+                            <p>
+                                <span th:each="tag : ${article.tags}" th:text="${tag}">_tag_</span> <!--da far diventare collegamenti-->
+                            </p>
+                        </div>
+                        <!--<div class="game-card">
+                            <img src="game2.jpg" alt="Game 2">
+                            <h3>Action dummy text of the printing type setting games 2022</h3>
+                            <p>February 26, 2022</p>
+                        </div>
+                        <div class="game-card">
+                            <img src="game3.jpg" alt="Game 3">
+                            <h3>Top 10 Best Computer games in the Marking agency near 2018 games</h3>
+                            <p>February 26, 2022</p>
+                        </div>-->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </body>
+</html>
+
+

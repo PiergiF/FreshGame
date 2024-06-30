@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login-FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+        
+    <body class="login-background">
+        <header class="header_navbar">
+            <a href="/"><img src="/images/logo/logo.png" class="header_logo" alt="Logo"/></a>
+        </header>
+
+        <div class="loginRegistrationDiv">
+            <form class="form-signin" th:action="@{/loginPage}" method="post">
+                <h6 class="text-center" th:if="${param.registration != null}" style="color: green">Registrazione Completata!</h6>
+                <h1 class="h3 mb-3 font-weight-normal text-center text-white">Accedi</h1>
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" id="username" name="username" class="form-control mb-3" placeholder="Username" required autofocus/>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" required>
+
+                <button class="btn btn-lg btn-primary btn-block btn-confirm-custom" type="submit">Accedi</button>
+
+                <div><span th:if="${param.error != null}" style="color: red;">Username o password errati</span></div>
+
+                <p class="mt-2 text-center">
+                    <span class="text-white">Hai gia' un account?</span>
+                    <a href="/registrationPage" class="custom-link">Registrati</a>
+                </p>
+            </form>
+            <!--<p>With GitHub: <a href="/oauth2/authorization/github">click here</a></p>-->
+        </div>
+    </body>
+</html>
