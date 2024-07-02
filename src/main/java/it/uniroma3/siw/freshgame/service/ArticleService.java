@@ -44,6 +44,10 @@ public class ArticleService {
         return this.articleRepository.findAllByGame(game);
     }
 
+    public void deleteById(Long id){
+        articleRepository.deleteById(id);
+    }
+
     public List<Article> getAllArticlesByTag(Tags tag){
         List<Article> all = this.getAllArticles();
         List<Tags> articleTags = new ArrayList<>();;
@@ -206,6 +210,14 @@ public class ArticleService {
             }
         }
         return resultReviewsArticles;
+    }
+
+    public void deleteArticlesByJournalist(Journalist journalist){
+        List<Article> articles = this.getAllArticlesByJournalist(journalist);
+        for(Article article : articles){
+            //this.deleteRecipeIngredientsByRecipeId(recipe.getId());
+            this.deleteById(article.getId());
+        }
     }
 
 }

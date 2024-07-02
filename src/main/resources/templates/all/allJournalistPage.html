@@ -112,7 +112,7 @@
                                 </a>
                                 <div class="journalist-info">
                                     <a th:href="@{'/all/journalistPage' + '/' + ${journalist.id}}" class="btn course-btn" th:text="${journalist.name} + ' ' + ${journalist.surname}" >_nameAndsurnameJournalist_</a> <!--style="color: white;"-->
-                                    <a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/editjournalistPage/' + ${journalist.id}}" class="btn btn-primary btn-sm btn-spacing">Modifica</a>
+                                    <!--<a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/editjournalistPage/' + ${journalist.id}}" class="btn btn-primary btn-sm btn-spacing">Modifica</a>-->
 
                                     <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
                                         <a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/removeCredentialsJournalist/' + ${journalist.id}}" class="btn btn-danger btn-sm btn-spacing" style="background-color: orange;">Rimuovi accesso</a>

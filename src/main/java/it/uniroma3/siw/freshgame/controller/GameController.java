@@ -144,6 +144,7 @@ public class GameController {
                 model.addAttribute("averageReaderIsZero", true);
                 model.addAttribute("noReaderAverage", false);
             }else{
+                averageReaderReviewsValue =  (float) (Math.floor(averageReaderReviewsValue*10.0)/10.0);
                 model.addAttribute("averageReaderReviewsValue", averageReaderReviewsValue);
                 //model.addAttribute("averageReaderIsZero", false);
                 model.addAttribute("averageReaderIsZero", false);
@@ -159,6 +160,7 @@ public class GameController {
                 model.addAttribute("averageJournalistIsZero", true);
                 model.addAttribute("noJournalistAverage", false);
             }else{
+                averageJournalistReviewsValue =  (float) (Math.floor(averageJournalistReviewsValue*10.0)/10.0);
                 model.addAttribute("averageJournalistReviewsValue", averageJournalistReviewsValue);
                 //model.addAttribute("averageJournalistIsZero", false);
                 model.addAttribute("averageJournalistIsZero", false);

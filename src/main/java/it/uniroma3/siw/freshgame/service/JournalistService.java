@@ -26,4 +26,8 @@ public class JournalistService {
     public Journalist save(Journalist journalist){
         return this.journalistRepository.save(journalist);
     }
+
+    public void deleteById(Long id){
+        journalistRepository.deleteById(id);
+    }
 }

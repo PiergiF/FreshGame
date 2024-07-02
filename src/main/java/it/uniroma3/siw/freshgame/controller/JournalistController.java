@@ -12,7 +12,10 @@ import it.uniroma3.siw.freshgame.model.Journalist;
 import it.uniroma3.siw.freshgame.model.Platforms;
 import it.uniroma3.siw.freshgame.model.Tags;
 import it.uniroma3.siw.freshgame.service.ArticleService;
+import it.uniroma3.siw.freshgame.service.CredentialsService;
 import it.uniroma3.siw.freshgame.service.JournalistService;
+import it.uniroma3.siw.freshgame.service.ReviewService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,12 @@ public class JournalistController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private CredentialsService credentialsService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("/all/journalistPage/{id}")
     public String getJournalistPage(@PathVariable("id")Long journalistId, Model model) {
@@ -67,6 +76,26 @@ public class JournalistController {
     public String getAllJournalistPage(Model model) {
         model.addAttribute("journalists", this.journalistService.getAllJournalists());
         return "all/allJournalistPage.html";
+    }
+
+    @GetMapping("/editor/removeCredentialsJournalist/{id}")
+    public String removeCredentialsChef(@PathVariable("id") Long journalistId) {
+        
+        this.credentialsService.deleteByJournalistId(journalistId);
+
+        return "redirect:/all/allJournalistPage";
+    }
+
+    @GetMapping("/editor/removeTotalJournalist/{id}")
+    public String removeTotalChef(@PathVariable("id") Long journalistId) {
+
+        Journalist journalist = this.journalistService.getJournalistById(journalistId);
+        this.credentialsService.deleteByJournalistId(journalistId);
+        this.articleService.deleteArticlesByJournalist(journalist);
+        this.reviewService.deleteReviewsByJournalist(journalist);
+        journalistService.deleteById(journalistId);
+
+        return "redirect:/all/allJournalistPage";
     }
     
     
