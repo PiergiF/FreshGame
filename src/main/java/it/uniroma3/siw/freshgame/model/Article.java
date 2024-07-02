@@ -1,6 +1,7 @@
 package it.uniroma3.siw.freshgame.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -29,10 +30,15 @@ public class Article {
     @NotBlank
     private String introduction;
     @NotBlank
+    @Column(length = 1000)
     private String body;
 
     //@NotNull
-    private LocalDate date;
+    //private LocalDate date;
+
+    private LocalDateTime dateTime;
+
+    
 
     @ManyToOne
     private Game game;
@@ -41,7 +47,7 @@ public class Article {
     private Journalist journalist;
 
     @Enumerated(EnumType.STRING)
-    private Tag[] tags;
+    private List<Tags> tags;
 
     @Column(length = 10000000)
     private List<String> imagesBase64;
@@ -79,12 +85,22 @@ public class Article {
         this.body = body;
     }
 
+    /*
     public LocalDate getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    */
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Game getGame() {
@@ -103,11 +119,11 @@ public class Article {
         this.journalist = journalist;
     }
 
-    public Tag[] getTags() {
+    public List<Tags> getTags() {
         return tags;
     }
 
-    public void setTags(Tag[] tags) {
+    public void setTags(List<Tags> tags) {
         this.tags = tags;
     }
 

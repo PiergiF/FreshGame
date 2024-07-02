@@ -5,7 +5,7 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
-        <!--<script th:inline="javascript" src="/javascript/script.js"></script>-->
+        <script th:inline="javascript" src="/javascript/script.js"></script>
 
         <!--bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -49,19 +49,19 @@
                     <span th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" th:style="'color:red'"></span>
                 </div>
 
-                <!--
+                
                 <div class="mb-3" id="chooseRoleRegistration">
                     <label class="d-block text-white">Registrati come:</label>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="customerRole" name="role" value="CUSTOMER" class="custom-control-input" checked onclick="updateRegistrationForm(this)">
-                        <label class="custom-control-label text-white" for="customerRole">Customer</label>
+                        <input type="radio" id="readerRole" name="role" value="READER" class="custom-control-input" checked onclick="updateRegistrationForm(this)">
+                        <label class="custom-control-label text-white" for="readerRole">Lettore</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="chefRole" name="role" value="CHEF" class="custom-control-input" onclick="updateRegistrationForm(this)">
-                        <label class="custom-control-label text-white" for="chefRole">Chef</label>
+                        <input type="radio" id="journalistRole" name="role" value="JOURNALIST" class="custom-control-input" onclick="updateRegistrationForm(this)">
+                        <label class="custom-control-label text-white" for="journalistRole">Giornalista</label>
                     </div>
                 </div>
-                -->
+                
                 
                 
                 <button type="submit" id="registrationButton" class="btn btn-lg btn-primary btn-block custom-btn">Registrati</button>

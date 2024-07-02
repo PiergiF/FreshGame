@@ -1,8 +1,8 @@
 package it.uniroma3.siw.freshgame.model;
 
-public enum Tag {
-    GUIDE,
+public enum Tags {
     NEWS,
-    REVIEW;
+    GUIDES,
+    REVIEWS;
 
 }

@@ -19,8 +19,12 @@ public class EditorService {
         return this.editorRepository.findAll();
     }
 
-    public Optional<Editor> getEditorById(Long id){
-        return this.editorRepository.findById(id);
+    public Editor getEditorById(Long id){
+        return this.editorRepository.findById(id).orElse(null);
+    }
+
+    public Editor save(Editor editor){
+        return this.editorRepository.save(editor);
     }
 
 }

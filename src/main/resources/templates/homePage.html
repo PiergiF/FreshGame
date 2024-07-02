@@ -8,6 +8,10 @@
 
         <!--bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
     </head>
 
@@ -65,7 +69,7 @@
                     <input type="search" name="query" class="search-input" placeholder="Search...">
                 </form>
 
-                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
 
                 <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
                     <ul class="header_account_menu">
@@ -75,7 +79,7 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a href="#">Impostazioni</a>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
                                     <a href="#">Recensioni</a>
@@ -94,26 +98,51 @@
             </div>
         </header>
 
-        
-        <div class="container-navbar nav-scroller py-1 mb-3 border-bottom" style="background-color: #401F3E;">
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Guide</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Giochi</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Generi</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>
-            </nav>
-          </div>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>-->
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
 
-          
-          <div id="articleCarousel" class="carousel slide" data-ride="carousel">
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!--<a th:each=" tag : ${tags}" class="nav-item nav-link link-body-emphasis active" th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>-->
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="#">Generi</a>-->
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>-->
+            </nav>
+        </div>
+
+        <!--courosel-->
+        <div id="articleCarousel" class="carousel slide" data-ride="carousel" th:unless="${couroselArticles == null || couroselArticles.isEmpty()}">
             <ol class="carousel-indicators">
                 <li data-target="#articleCarousel" data-slide-to="0" class="active"></li>
-                <li th:each="article, iterStat : ${articles}" th:if="${iterStat.index > 0}" data-target="#articleCarousel" th:data-slide-to="${iterStat.index}"></li>
+                <li th:each="article, iterStat : ${couroselArticles}" th:if="${iterStat.index > 0}" data-target="#articleCarousel" th:data-slide-to="${iterStat.index}"></li>
             </ol>
             <div class="carousel-inner">
-                <div th:each="article, iterStat : ${articles}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                <div th:each="article, iterStat : ${couroselArticles}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
                     <a th:href="@{'/all/articlePage/' + ${article.id} }">
                         <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" class="d-block w-100 carousel-image" th:alt="${article.title}"/>
                     </a>
@@ -131,14 +160,38 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+
+
+        <!--
+        <main>
+            <section class="game-news">
+                <div class="container">
+                    <h2>Last Game News</h2>
+                    <div th:if="${orderedArticles == null || orderedArticles.isEmpty()}">Non ci sono notizie</div>
+                    <div class="game-cards">
+                        <div th:each="orderedArticle : ${orderedArticles}" class="game-card">
+                            <h3 th:text="${orderedArticle.title}">_title_</h3>
+                            <img th:src=" 'data:image/;base64,' + ${orderedArticle.imagesBase64[0]} " class="newsPageImageMiniature" alt="${orderedArticle.title}">
+                            <h5 th:text="${orderedArticle.introduction}">_introduction_</h5>
+                            <span th:text="${orderedArticle.date}">_date_</span>
+                            <span th:text="${orderedArticle.journalist.name} + ' ' + ${orderedArticle.journalist.surname}">_journalistName&Surname_</span> <!--da far diventare collegamenti
+                            <span th:text="${orderedArticle.game.name}">_nameGame_</span> <!--da far diventare collegamenti
+                            <p>
+                                <span th:each="tag : ${orderedArticle.tags}" th:text="${tag}">_tag_</span> <!--da far diventare collegamenti
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        -->
         
         
         <a href="/journalist/createArticlePage"> nuova notizia</a>
+        <a href="/journalist_editor/addGamePage"> nuovo gioco</a>
 
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
 
     </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>FreshGame</title>
+        <title>All News - FreshGame</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
@@ -65,7 +65,7 @@
                     <input type="search" name="query" class="search-input" placeholder="Search...">
                 </form>
 
-                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
 
                 <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
                     <ul class="header_account_menu">
@@ -95,29 +95,59 @@
         </header>
 
         
-        <div class="container-navbar nav-scroller py-1 mb-3 border-bottom" style="background-color: #401F3E;">
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Guide</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>
+                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>-->
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!--<a th:each=" tag : ${tags}" class="nav-item nav-link link-body-emphasis active" th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>-->
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown">
+                            <li th:each=" platform : ${platforms}">
+                                <a href="#" th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Generi</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>-->
             </nav>
         </div>
+
         <main>
             <section class="game-news">
                 <div class="container">
-                    <h2>Game News</h2>
+                    <h2 th:text="#{ ${specificTag} }">_tag_</h2>
+                    <div th:if="${allArticlesWithTag == null || allArticlesWithTag.isEmpty()}">Non ci sono notizie</div>
                     <div class="game-cards">
-                        <div th:each="article : ${articles}" class="game-card">
-                            <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " class="newsPageImageMiniature" alt="${article.title}">
-                            <h3 th:text="${article.introduction}">_introduction_</h3>
-                            <span th:text="${article.date}">_date_</span>
-                            <span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname}">_journalistName&Surname_</span> <!--da far diventare collegamenti-->
-                            <span th:text="${article.game.name}">_nameGame_</span> <!--da far diventare collegamenti-->
+                        <div th:each="article : ${allArticlesWithTag}" class="game-card">
+                            <h3 th:text="${article.title}">_title_</h3>
+                            <img th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}"
+                                th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " class="articleImageMiniature" alt="${article.title}">
+                            <h5 th:text="${article.introduction}">_introduction_</h5>
+                            <!--<span th:text="${news.dateTime}">_date_</span>-->
+                            <span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname}">_journalistNameAndSurname_</span> &emsp; <!--da far diventare collegamenti-->
+                            <span th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}"></span> <!--stampo solo la data-->
+                            <p th:text="${article.game.name}">_nameGame_</p> <!--da far diventare collegamenti-->
                             <p>
-                                <span th:each="tag : ${article.tags}" th:text="${tag}">_tag_</span> <!--da far diventare collegamenti-->
+                                <span th:each="tag : ${article.tags}"><a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="${tag}" class="text-cream" style="text-decoration: none;">_tag_</a>&emsp;</span> <!--da far diventare collegamenti-->
                             </p>
                         </div>
                         <!--<div class="game-card">

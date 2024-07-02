@@ -18,10 +18,13 @@ public class Review {
     private Long id;
 
     private float value;
-    private String comment;
+    //private String comment;
     
     @ManyToOne
     private Reader reader;
+
+    @ManyToOne
+    private Journalist journalist;
 
     @ManyToOne
     private Game game;
@@ -38,17 +41,26 @@ public class Review {
     public void setValue(float value) {
         this.value = value;
     }
+    /*
     public String getComment() {
         return comment;
     }
     public void setComment(String comment) {
         this.comment = comment;
     }
+    */
     public Reader getReader() {
         return reader;
     }
     public void setReader(Reader reader) {
         this.reader = reader;
+    }
+
+    public Journalist getJournalist() {
+        return journalist;
+    }
+    public void setJournalist(Journalist journalist) {
+        this.journalist = journalist;
     }
 
     public Game getGame() {

@@ -5,6 +5,7 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
 
         <!--bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -79,9 +80,6 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
-                                </li>
-                                <li>
                                     <a href="#">Recensioni</a>
                                 </li>
 
@@ -101,9 +99,7 @@
         <!--navbar sottostante-->
         <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
-                <!--<a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Guide</a>
-                <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>-->
+                
                 <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
 
                 <ul class="header_account_menu">
@@ -117,7 +113,6 @@
                     </li>
                 </ul>
 
-                <!--<a th:each=" tag : ${tags}" class="nav-item nav-link link-body-emphasis active" th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>-->
                 <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
                 <ul class="header_account_menu">
                     <li>
@@ -129,69 +124,89 @@
                         </ul>
                     </li>
                 </ul>
-
-                <!--<a class="nav-item nav-link link-body-emphasis active" href="#">Generi</a>-->
-                <!--<a class="nav-item nav-link link-body-emphasis active" href="#">Piattaforme</a>-->
             </nav>
         </div>
 
-        <!--courosel-->
-        <div id="articleCarousel" class="carousel slide" data-ride="carousel" th:unless="${couroselArticles == null || couroselArticles.isEmpty()}">
-            <ol class="carousel-indicators">
-                <li data-target="#articleCarousel" data-slide-to="0" class="active"></li>
-                <li th:each="article, iterStat : ${couroselArticles}" th:if="${iterStat.index > 0}" data-target="#articleCarousel" th:data-slide-to="${iterStat.index}"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div th:each="article, iterStat : ${couroselArticles}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                    <a th:href="@{'/all/articlePage/' + ${article.id} }">
-                        <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" class="d-block w-100 carousel-image" th:alt="${article.title}"/>
-                    </a>
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5 th:text="${article.title}">Titolo Articolo</h5>
+        <div class="container mt-5 container-custom">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Impostazioni</h1>
+            <form th:action="@{/settingsData}" method="post" enctype = 'multipart/form-data';>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="text-white">Informazioni personali:</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="text-white">Nome:</label>
+                                <input type="text" th:value="${user.name}" name="name" class="form-control"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="text-white">Cognome:</label>
+                                <input type="text" th:value="${user.surname}" name="surname" class="form-control"/>
+                            </div>
+                        </div>
+                        <!--<div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label th:text="#{email}" class="text-white"> _email_</label>
+                                <input type="email" th:value="${user.email}" name="email" class="form-control"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label th:text="#{dateOfBirth}" class="text-white"> _dateOfBirth_</label>
+                                <input type="date" th:value="${user.dateOfBirth}" name="dateOfBirth" class="form-control"/>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
-            </div>
-            <a class="carousel-control-prev" href="#articleCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#articleCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-
-
-        <!--
-        <main>
-            <section class="game-news">
-                <div class="container">
-                    <h2>Last Game News</h2>
-                    <div th:if="${orderedArticles == null || orderedArticles.isEmpty()}">Non ci sono notizie</div>
-                    <div class="game-cards">
-                        <div th:each="orderedArticle : ${orderedArticles}" class="game-card">
-                            <h3 th:text="${orderedArticle.title}">_title_</h3>
-                            <img th:src=" 'data:image/;base64,' + ${orderedArticle.imagesBase64[0]} " class="newsPageImageMiniature" alt="${orderedArticle.title}">
-                            <h5 th:text="${orderedArticle.introduction}">_introduction_</h5>
-                            <span th:text="${orderedArticle.date}">_date_</span>
-                            <span th:text="${orderedArticle.journalist.name} + ' ' + ${orderedArticle.journalist.surname}">_journalistName&Surname_</span> <!--da far diventare collegamenti
-                            <span th:text="${orderedArticle.game.name}">_nameGame_</span> <!--da far diventare collegamenti
-                            <p>
-                                <span th:each="tag : ${orderedArticle.tags}" th:text="${tag}">_tag_</span> <!--da far diventare collegamenti
-                            </p>
+    
+                <div class="row" th:if="${accountRole == 'JOURNALIST'}">
+                    <div class="col-md-12">
+                        <h5 class="text-white">Foto del Giornalista:</h5>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label for="journalistImage" class="text-white">Cambia Foto da Giornalista:</label>
+                                <input type="file" class="form-control-file" id="chefImage" name="chefImage"/>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-center align-items-center" th:unless="${user.imageBase64 == null || user.imageBase64.isEmpty()}">
+                                <label class="text-white">Immagine attuale:</label><br>
+                                <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-chefImage" alt="actualChefImage"/><!--id="actualChefImage"-->
+                                <!--<input type="hidden" name="removeImage" value="false"/>-->
+                                <!--<button type="button" class="btn btn-secondary btn-sm" onclick="settingsChangeImageChef(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>-->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
-        -->
-        
-        
-        <a href="/journalist/createArticlePage"> nuova notizia</a>
-        <a href="/journalist_editor/addGamePage"> nuovo gioco</a>
+    
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="text-white">Credenziali:</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="text-white">Username:</label>
+                                <div class="input-group">
+                                    <input type="text" th:value="${credentials.username}" class="form-control-plaintext text-white" disabled/>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="changeUsernameClick(this.parentElement.parentElement)" >Edit</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" th:field="${newCredentials.username}" required/>
+                                <input type="hidden" name="changeUsername" value="false"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="text-white">Password:</label>
+                                <div class="input-group">
+                                    <input type="password" th:value="${credentials.password}" class="form-control-plaintext text-white" disabled/>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="changePasswordClick(this.parentElement.parentElement)" >Edit</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" th:field="${newCredentials.password}" required/>
+                                <input type="hidden" name="changePassword" value="false"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block custom-btn mt-4">Salva Modifiche</button>
+            </form>
+        </div>
 
-
-        
 
     </body>
 </html>

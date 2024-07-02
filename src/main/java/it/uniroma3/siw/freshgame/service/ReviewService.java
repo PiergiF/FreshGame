@@ -19,7 +19,11 @@ public class ReviewService {
         return this.reviewRepository.findAll();
     }
 
-    public Optional<Review> getReviewById(Long id){
-        return this.reviewRepository.findById(id);
+    public Review getReviewById(Long id){
+        return this.reviewRepository.findById(id).orElse(null);
+    }
+
+    public Review save(Review review){
+        return this.reviewRepository.save(review);
     }
 }

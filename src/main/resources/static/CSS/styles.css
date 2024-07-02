@@ -4,18 +4,29 @@
     }
 
     body.backgroundColorSite {
-        background-color: #907396; /* Colore uniforme di sfondo */
+        /*background-color: #907396;*/ /* Colore uniforme di sfondo */
         /*background-color: #3f2e56;*/
-        color: white;
+        background-color: #dadde7;
+        /*color: black;*/
     }
 
     .text-white {
         color: white !important;
     }
 
+    .text-cream{
+        color: #EBEFBF;
+    }
+
+    .text-cream:hover{
+        color: #eaf7cf;
+        color: #c8cf7a;
+    }
+
     .custom-link {
-        /*color: #453F78;*/
-        color: #9da2ab;
+        /*color: #453F78;
+        color: #9da2ab;*/
+        color: #D664BE;
     }
     .custom-link:hover{
         text-decoration: none;
@@ -24,10 +35,246 @@
         color: #401F3E;
     }
 
+    .custom-btn{
+        background-color: transparent !important;
+        border: 1px solid #D664BE !important;
+    }
+    .custom-btn:hover{
+        /*background-color: #c750bf !important;*/
+        background-color: #D664BE !important;
+    }
+
+    .decoration-test-none:hover{
+        text-decoration: none;
+    }
+
+    .text-white-hover:hover{
+        color: white;
+    }
+
     .btn-confirm-custom {
         background-color: #453F78 !important;
         border: none !important;
         color: white !important;
+    }
+
+    .background-blue{
+        background-color: #453F78;
+    }
+
+    /*#### global articles ####*/
+    .mainArticlesContainer{
+        display: flex;
+    }
+
+    .article-item-animation{
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .article-item-animation:hover{
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* vedere se posso fare senza section davanti
+    section.news {
+        flex: 50%;
+    }
+    */
+
+    /*
+    .articles-section {
+        flex: 50%;
+    }
+    */
+
+    section.articles-section {
+        flex: 50%;
+    }
+
+    .articles-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    article.article-item {
+        background: #fff;
+        margin-bottom: 20px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+    }
+    
+    article.article-item img {
+        width: 250px;
+        height: auto;
+        margin-right: 20px;
+    }
+    
+    article.article-item .article-content {
+        flex: 1;
+    }
+    
+    /*quello dell'esempio
+    article.article-item .category {
+        background: green;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+    */
+
+    /*article.article-item .category-NEWS*/
+    .category-NEWS {
+        background: orange;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    /*article.article-item .category-GUIDES*/
+    .category-GUIDES {
+        background: cadetblue;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    /*article.article-item .category-REVIEWS*/
+    .category-REVIEWS {
+        background: green;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+    
+    article.article-item h2 {
+        margin: 10px 0;
+        font-size: 20px;
+        color: #401f3e;
+    }
+    
+    article.article-item p {
+        font-size: 16px;
+        color: #777;
+    }
+
+    button.read-more {
+        padding: 10px 15px;
+        background: #f44336;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 16px;
+    }
+    
+    button.read-more:hover {
+        background: #d32f2f;
+    }
+
+
+    a.read-more {
+        padding: 10px 15px;
+        background: #f44336;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 16px;
+    }
+    
+    a.read-more:hover {
+        background: #d32f2f;
+    }
+
+/*#### global games####*/
+    .platform-games-section-PS4{
+        background: #007bff;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-PS5{
+        background: blue;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-XONE{
+        background: #198754;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-SERIES_X{
+        background: green;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-SERIES_S{
+        background: #f8f9fa;
+        color: black;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-SWITCH{
+        background: red;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .platform-games-section-PC{
+        background: #6c757d;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .genre-games-section{
+        background-color: brown;
+        color: white;
+        padding: 2px 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: inline-block;
     }
 
     /*#### Javascript ####*/
@@ -118,14 +365,16 @@
         /*background-color: #453F78 !important;
         border: none !important;*/
         /*border: 1px solid white !important;*/
-        border: 1px solid #453F78 !important;
+        /*border: 1px solid #453F78 !important;*/
+        border: 1px solid #D664BE !important;
         height: 40px !important;
         align-items: center;
     }
 
     .btn-login-custom:hover{
         /*background-color: #453F60 !important;*/
-        background-color: #453F78 !important;
+        /*background-color: #453F78 !important;*/
+        background-color: #D664BE !important;
         /*border: none !important;*/
         color: white !important;
     }
@@ -246,6 +495,7 @@
 
 .nav-link:hover {
     text-decoration: underline;
+    color: #D664BE;
 }
 
 /*
@@ -287,15 +537,22 @@
             margin: 0;
             position: absolute;
             top: 100%;
-            left: -30px;
+            /*left: 0;
+            margin-left: auto;
+            margin-right: auto;*/
+            left: -30px; /*per spostare un po' a sinistra*/
+            /*left: -50%;*/
+            /*left: 50%;*/
+            /*transform: translate(-50%, 0);*/
 
-            background-color: #453F78;
+            /*background-color: #453F78;*/
             background-color: #401F3E;
-            background-color: #907396;
+            /*background-color: #907396;*/
+            /*background-color: #D664BE;*/
 
             border-radius: 8px; /* Bordi arrotondati */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
-            /*display: none; /* Nasconde il menu */
+            display: none; /* Nasconde il menu */ /*se rimosso avviene l'animazione, ma parte quando si passa dov'e' nascosto*/
             opacity: 0; /* Imposta opacità a 0 per animazione */
             transition: opacity 0.3s ease, transform 0.3s ease; /* Animazione di transizione */
             transform: translateY(-10px); /* Sposta leggermente verso l'alto per animazione */
@@ -310,6 +567,7 @@
 
         .header_account_dropDownMenu li {
             padding: 10px;
+            /*padding: 5px;*/
         }
 
         .header_account_dropDownMenu li a {
@@ -328,9 +586,12 @@
             /*background-color: rgb(223,205,54);
             color: white;
             */
-            color: #401F3E;
+            /*color: #401F3E;*/
             /*color: #453F78;*/
             /*color: #907396;*/
+            /*color: #EBEFBF;*/
+            /*color: #0056b3;*/
+            color: #D664BE;
             /*border-radius: 5px;*/ /* Bordi arrotondati */
         }
 
@@ -345,10 +606,38 @@
             margin: 0;
         }
 
+        /*
         .header_account_dropDownMenu form input[type="submit"]:hover {
             background-color: #f0f0f0;
             color: #007bff;
         }
+        */
+
+/*#### sub navbar dropDown ####*/
+
+#subNavbar_dropDown_Tag{
+    left: 0;
+}
+
+#subNavbar_dropDown_Platform{
+    left: 25px;
+}
+
+/*#### Courosel Home Page ####*/
+
+.carousel-image {
+    height: 500px; 
+    width: 100%;
+    object-fit: cover; /* Questo mantiene le proporzioni dell'immagine e riempie l'elemento */
+}
+
+/*#### Articole principal image ####*/
+.principal-image-article{
+    height: 300px; 
+    width: 80%;
+    padding-left: 20%;
+    object-fit: cover; /* Questo mantiene le proporzioni dell'immagine e riempie l'elemento */
+}
 
 
 /*#### Form ####*/
@@ -379,6 +668,11 @@
         margin-bottom: 1rem;
         border-radius: 10px;
         color: white;
+    }
+
+    .custom-control-input:checked~.custom-control-label::before {
+        background-color: #401F3E !important;
+        border: none !important;
     }
 
 /*#### News page ####*/
@@ -412,8 +706,238 @@
     height: auto;
     }
 
-    .newsPageImageMiniature{
+/*#### all article ####*/
+    .articleImageMiniature{
         max-width: 200px;
         max-height: 200px;
         object-fit: cover;
     }
+
+
+
+
+
+/*#### Recensione voto gamepage ####*/
+
+.container-custom{
+    /*background-color: #453F78;*/
+    background-color: #401F3E;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+
+    /*width: 300px;*/
+}
+
+.review-container {
+    /*background-color: #453F78;*/
+    background-color: #401F3E;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+
+    justify-content: space-around;
+}
+
+.img-game {
+    max-width: 100%;
+    height: auto;
+}
+
+.platforms {
+    /*color: #ff4c4c;*/
+    color: #D664BE;
+}
+
+.rating-container {
+    /*background-color: #262626;*/
+    /*background-color: #EBEFBF;*/
+    /*background-color: #70a288;*/
+    /*background-color: #ece2d0;*/
+    background-color: #dadde7;
+    padding: 10px;
+    border-radius: 8px;
+
+    /*display: flex;
+    align-items: center;
+    justify-content: space-between;*/
+    
+    
+}
+
+/*
+.comment-container{
+    background-color: #ece2d0;
+    padding: 10px;
+    border-radius: 8px;
+    justify-content: space-around;
+}*/
+
+.rating-container .row {
+    width: 100%;
+    /*sembra non servano questi tre*/
+    /*display: flex;
+    align-items: center;
+    justify-content: space-between;*/
+
+    width: 100%;
+    margin: 0;
+}
+
+.rating-container p {
+    margin: 0;
+}
+
+.rating {
+    font-size: 2em;
+    margin: 0;
+}
+
+.freshGame {
+    /*color: #401F3E;*/
+    color: #D664BE;
+}
+
+.readers {
+    color: #1e90ff;
+}
+
+.readers-count {
+    background-color: #1e90ff;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.8em;
+}
+
+.journalist-count{
+    /*background-color: #401F3E;*/
+    background-color: #D664BE;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.8em;
+}
+
+.slider-container {
+    /*margin-top: 10px;
+    display: flex;
+    justify-content: center;*/
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.custom-slider {
+    width: 80%;
+    /*width: 100%;*/
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    /*background: #ddd;*/
+    background: black;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #ff4c4c;
+    cursor: pointer;
+}
+
+.custom-slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #ff4c4c;
+    cursor: pointer;
+}
+
+
+.review-text-container{
+    background-color: #ece2d0;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*position: absolute;
+    left: 0;
+    transform: translate(100%, 10%); interno*/
+    box-sizing: border-box;
+    height: auto;
+    font-size: 16px;
+}
+.form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+
+.btn-platform-PS4{
+  /*background-color: blue !important;*/
+  background-color: transparent !important;
+  border: 1px solid #007bff !important;
+}
+.btn-platform-PS4:hover{
+    background-color: #007bff !important;
+}
+
+.btn-platform-PS5{
+    /*background-color: blue !important;*/
+    background-color: transparent !important;
+    border: 1px solid blue !important;
+}  
+.btn-platform-PS5:hover{
+    background-color: blue !important;
+}
+
+.btn-platform-XONE{
+    background-color: transparent !important;
+    border: 1px solid #198754 !important;
+}
+.btn-platform-XONE:hover{
+    background-color: #198754 !important;
+}
+
+.btn-platform-SERIES_X{
+    /*background-color: green !important;*/
+    background-color: transparent !important;
+    border: 1px solid green !important;
+}
+.btn-platform-SERIES_X:hover{
+    background-color: green !important;
+}
+
+.btn-platform-SERIES_S{
+    background-color: transparent !important;
+    border: 1px solid #f8f9fa !important;
+}
+.btn-platform-SERIES_S:hover{
+    background-color: #f8f9fa !important;
+    color: black !important;
+}
+
+.btn-platform-SWITCH{
+    background-color: transparent !important;
+    border: 1px solid red !important;
+}
+.btn-platform-SWITCH:hover{
+    background-color: red !important;
+}
+
+.btn-platform-PC{
+    background-color: transparent !important;
+    border: 1px solid #6c757d !important;
+}
+.btn-platform-PC:hover{
+    background-color: #6c757d !important;
+}

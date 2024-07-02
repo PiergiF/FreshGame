@@ -13,14 +13,14 @@
         <!--fac simile-->
         <div class="referenceForJSClone">
             <span id="tagReference" class="mb-3">
-                <select th:field="${newArticle.tags}" class="form-control d-inline-block" style="width: auto;" required>
+                <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" required>
                     <option value="" selected disabled>Seleziona il tag</option>
-                    <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag}"></option>
+                    <option th:each="tag : ${tags}" th:value="${tag}" th:text="#{ ${tag} }">_tag_</option>
                 </select>
                 <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
             </span>
         </div>
-        
+
     </head>
 
     <body class="backgroundColorSite">
@@ -35,7 +35,7 @@
                     <input type="search" name="query" class="search-input" placeholder="Search...">
                 </form>
 
-                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
 
                 <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
                     <ul class="header_account_menu">
@@ -64,23 +64,23 @@
             </div>
         </header>
 
-        <div class="container mt-5">
-            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Scrivi un nuovo Articolo</h1>
-            <h6 class="text-center" th:if="${param.error != null}" style="color: red">Errore nella creazione dell'articolo</h6>
+        <div class="container mt-5 container-custom"> <!--container container-custom-->
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{createArticle.caption}">_createArticle.caption_</h1>
+            <h6 class="text-center" th:if="${param.error != null}" style="color: red">Non è possibile creare due articoli Recensione sullo stesso gioco</h6>
             <form th:action="@{/journalist/articleData}" th:object="${newArticle}" method="POST" id="formNewArticle" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="title">Titolo Articolo:</label>
+                    <label for="title" class="text-white">Titolo Articolo:</label>
                     <input type="text" id="title" name="title" th:field="${newArticle.title}" class="form-control" required/>
                 </div>
 
                 <div class="form-group">
-                    <label for="images">Carica Immagini:</label>
+                    <label for="images" class="text-white">Carica Immagini:</label>
                     <input type="file" id="images" name="images" class="form-control-file" multiple required>
                     <h6 class="text-center" th:if="${param.errorImage != null}" style="color: red">Errore nel caricamento delle immagini</h6>
                 </div>
 
                 <div th:switch="${accountRole}" class="form-group">
-                    <label for="journalist">Giornalista:</label>
+                    <label for="journalist" class="text-white">Giornalista:</label>
 
                     <select th:case=" 'JOURNALIST' " th:field="${newArticle.journalist}" disabled class="disabledJournalistChoise form-control">
                         <option th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}" selected>_JournalistName&Surname_</option>
@@ -97,18 +97,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Data:</label>
+                    <label for="date" class="text-white">Data:</label>
                     <input type="date" id="date" name="date" th:value="${date}" class="form-control" required disabled/>
                     <input type="hidden" id="date" name="date" th:value="${date}">
                 </div>
 
                 <div class="form-group">
-                    <label for="tagArticle">Tag:</label>
+                    <label for="tagArticle" class="text-white">Tag:</label>
                     <div id="tagsContainer">
                         <span class="mb-3">
-                            <select th:field="${newArticle.tags}" class="form-control d-inline-block" style="width: auto;" required> <!--style="width: auto;"-->
+                            <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" onchange="addReviewValue(this)" required> <!--th:field="${newArticle.tags}" style="width: auto;"-->
                                 <option value="" selected disabled>Seleziona il tag</option>
-                                <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag}"></option>
+                                <option th:each="tag : ${tags}" th:value="${tag}" th:text="#{ ${tag} }">_tag_</option>
                             </select>
                             <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
                         </span>
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="gameArticle">Riguardo al Gioco:</label>
+                    <label for="gameArticle" class="text-white">Riguardo al Gioco:</label>
                     <select id="game" name="game" class="form-control" required> <!--th:field="${newArticle.game}"-->
                         <option value="" selected disabled>Seleziona un Gioco</option>
                         <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
@@ -125,12 +125,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="introduction">Introduzione:</label>
+                    <label for="introduction" class="text-white">Introduzione:</label>
                     <textarea id="introduction" name="introduction" th:field="${newArticle.introduction}" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="body">Corpo dell'articolo:</label>
+                    <label for="body" class="text-white">Corpo dell'articolo:</label>
                     <textarea id="body" name="body" th:field="${newArticle.body}" class="form-control"></textarea>
                 </div>
 
@@ -173,7 +173,7 @@
                     <textarea id="description" name="description" th:field="${recipe.description}" class="form-control"></textarea>
                 </div>
                 -->
-                <button type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
+                <button id="createArticleButton" type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
             </form>
         </div>
 

@@ -19,7 +19,11 @@ public class JournalistService {
         return this.journalistRepository.findAll();
     }
 
-    public Optional<Journalist> getJournalistById(Long id){
-        return this.journalistRepository.findById(id);
+    public Journalist getJournalistById(Long id){
+        return this.journalistRepository.findById(id).orElse(null);
+    }
+
+    public Journalist save(Journalist journalist){
+        return this.journalistRepository.save(journalist);
     }
 }

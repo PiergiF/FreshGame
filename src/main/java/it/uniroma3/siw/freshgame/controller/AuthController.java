@@ -2,6 +2,7 @@ package it.uniroma3.siw.freshgame.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 
 import javax.print.DocFlavor.READER;
 
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.freshgame.model.Credentials;
+import it.uniroma3.siw.freshgame.model.Journalist;
 import it.uniroma3.siw.freshgame.model.Reader;
 import it.uniroma3.siw.freshgame.service.CredentialsService;
+import it.uniroma3.siw.freshgame.service.JournalistService;
 import it.uniroma3.siw.freshgame.service.ReaderService;
 import jakarta.validation.Valid;
 
@@ -29,6 +32,9 @@ public class AuthController {
 
     @Autowired
     private ReaderService readerService;
+
+    @Autowired
+    private JournalistService journalistService;
 
     @GetMapping("/loginPage")
     public String getLoginPage() {
@@ -45,16 +51,13 @@ public class AuthController {
     public String registerUser(@RequestParam(required = false, name = "name") String name, 
                                 @RequestParam(required = false, name = "surname") String surname, 
                                 @RequestParam(required = false, name = "gamertag") String gamertag, 
-                                //@RequestParam(required = false, name = "dateOfBirth") LocalDate dateOfBirth,
+                                @RequestParam(required = false, name = "bio") String bio,
                                 @RequestParam(required = false, name = "image") MultipartFile file,
                                 @Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult,
-                                //@RequestParam("role") String role,
+                                @RequestParam("role") String role,
                                 Model model) {
 
         //se name è presente nell'invio al controller ma senza valore equivale ad una stringa vuota, se non è proprio presente equivale a NULL
-
-        //provvisorio
-        String role = "READER";
         
         // se user e credential hanno entrambi contenuti validi, memorizza User e the Credentials nel DB
         if(!credentialsBindingResult.hasErrors()) {
@@ -63,22 +66,22 @@ public class AuthController {
                 readerService.saveReader(reader);
                 credentials.setReader(reader);
             }
-            /*
-            else if(role.equals("CHEF")){
-                Chef chef = new Chef(name, surname, email, dateOfBirth);
+            
+            else if(role.equals("JOURNALIST")){
+                Journalist journalist = new Journalist(name, surname, bio, gamertag);
 
                 try {
                 byte[] byteFoto = file.getBytes();
-                chef.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));
-                chefService.saveChef(chef);
-                credentials.setChef(chef);
+                journalist.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));
+                journalistService.save(journalist);
+                credentials.setJournalist(journalist);
                 } catch (IOException e) {
                     model.addAttribute("message", "Chef upload failed!");
                     return "/registrationPage";
                 }
 
             }
-            */
+            
             credentialsService.saveCredentials(credentials, role);
             return "redirect:/loginPage?registration=true";
         }

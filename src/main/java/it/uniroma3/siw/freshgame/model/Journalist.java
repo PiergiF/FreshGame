@@ -34,8 +34,22 @@ public class Journalist {
     @OneToMany (mappedBy = "journalist", fetch=FetchType.EAGER)
     private List<Article> articles;
 
+    @OneToMany(mappedBy = "journalist")
+    private List<Review> reviews;
+
     @Column(length = 10000000)
     private String imageBase64;
+
+    public Journalist(){
+
+    }
+
+    public Journalist(String name, String surname, String bio, String gamertag){
+        this.name = name;
+        this.surname = surname;
+        this.bio = bio;
+        this.gamertag = gamertag;
+    }
 
     public Long getId() {
         return id;
@@ -85,12 +99,31 @@ public class Journalist {
         this.articles = articles;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public String getImageBase64() {
         return imageBase64;
     }
 
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
+    }
+
+    @Override
+    public boolean equals(Object j){
+        Journalist journalist = (Journalist) j;
+        return this.name.equals(journalist.getName()) && this.surname.equals(journalist.getSurname()); 
+    }
+
+    @Override
+    public int hashCode(){
+        return this.name.hashCode() + this.surname.hashCode();
     }
 
 

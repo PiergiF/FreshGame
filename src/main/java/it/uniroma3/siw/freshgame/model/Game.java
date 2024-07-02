@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
@@ -29,10 +30,18 @@ public class Game {
 
     private LocalDate releaseDate;
 
+    @NotBlank
+    private String softwareHouse;
+
     @Enumerated(EnumType.STRING)
-    private Genres[] genres;
+    private List<Genres> genres;
+
+    @Enumerated(EnumType.STRING)
+    private List<Platforms> platforms;
 
     private String description;
+
+    private String youtubeURL;
 
     @OneToMany(mappedBy = "game")
     private List<Article> articles;
@@ -41,7 +50,7 @@ public class Game {
     private List<Review> reviews;
 
     @Column(length = 10000000)
-    private String[] imageBase64;
+    private List<String> imagesBase64;
 
 
     public Long getId() {
@@ -68,12 +77,28 @@ public class Game {
         this.releaseDate = releaseDate;
     }
 
-    public Genres[] getGenres() {
+    public String getSoftwareHouse() {
+        return softwareHouse;
+    }
+
+    public void setSoftwareHouse(String softwareHouse) {
+        this.softwareHouse = softwareHouse;
+    }
+
+    public List<Genres> getGenres() {
         return genres;
     }
 
-    public void setGenres(Genres[] genres) {
+    public void setGenres(List<Genres> genres) {
         this.genres = genres;
+    }
+
+    public List<Platforms> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<Platforms> platforms) {
+        this.platforms = platforms;
     }
 
     public String getDescription() {
@@ -82,6 +107,14 @@ public class Game {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getYoutubeURL() {
+        return youtubeURL;
+    }
+
+    public void setYoutubeURL(String youtubeURL) {
+        this.youtubeURL = youtubeURL;
     }
 
     public List<Article> getArticles() {
@@ -100,12 +133,23 @@ public class Game {
         this.reviews = reviews;
     }
 
-    public String[] getImageBase64() {
-        return imageBase64;
+    public List<String> getImagesBase64() {
+        return imagesBase64;
     }
 
-    public void setImageBase64(String[] imageBase64) {
-        this.imageBase64 = imageBase64;
+    public void setImagesBase64(List<String> imagesBase64) {
+        this.imagesBase64 = imagesBase64;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        Game game = (Game) o;
+        return this.name.equals(game.getName()) && this.releaseDate.equals(game.getReleaseDate()) && this.softwareHouse.equals(game.getSoftwareHouse());
+    }
+
+    @Override
+    public int hashCode(){
+        return this.name.hashCode() + this.releaseDate.hashCode() + this.softwareHouse.hashCode();
     }
 
     

@@ -57,6 +57,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
                 .requestMatchers(HttpMethod.POST,"/registrationData", "/loginPage").permitAll()
                 .requestMatchers(HttpMethod.GET, "/journalist/**").hasAnyAuthority(JOURNALIST_ROLE)
                 .requestMatchers(HttpMethod.POST, "/journalist/**").hasAnyAuthority(JOURNALIST_ROLE)
+                .requestMatchers(HttpMethod.GET,"/journalist_editor/**").hasAnyAuthority(JOURNALIST_ROLE, EDITOR_ROLE)
+                .requestMatchers(HttpMethod.POST,"/journalist_editor/**").hasAnyAuthority(JOURNALIST_ROLE, EDITOR_ROLE)
                 .requestMatchers(HttpMethod.GET,"/editor/**").hasAnyAuthority(EDITOR_ROLE)
                 .requestMatchers(HttpMethod.POST,"/editor/**").hasAnyAuthority(EDITOR_ROLE)
         		// tutti gli utenti autenticati possono accere alle pagine rimanenti 

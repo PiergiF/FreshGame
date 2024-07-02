@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recensioni</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
+            <nav class="nav nav-underline justify-content-between">
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container mt-5 container-custom">
+            <h1 th:text="${article.title}" class="text-white text-center">_titleArticle_</h1>
+            <h4 th:text="${article.introduction}" class="text-white">_introductionArticle_</h4>
+            <img th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}" 
+            th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " alt="Article Cover"  class="principal-image-article"/> <!-- class="d-block w-100" class momentanea-->
+            <div>
+                <span th:each=" tag : ${article.tags}" style="padding-left: 20%;"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } " >_tag_</a>&emsp;</span> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
+            </div>
+
+            <br>
+            <h5 th:text="${article.body}" class="rating-container">_bodyArticle_</h5> <!--class="text-white"-->
+            <br>
+
+            <div id="articleCarousel" class="carousel slide" data-ride="carousel" th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}">
+                <ol class="carousel-indicators">
+                    <li data-target="#articleCarousel" data-slide-to="0" class="active"></li>
+                    <li th:each="image, iterStat : ${article.imagesBase64}" th:if="${iterStat.index > 0}" data-target="#articleCarousel" th:data-slide-to="${iterStat.index}"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div th:each="image, iterStat : ${article.imagesBase64}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                        <!--<a th:href="@{'/all/articlePage/' + ${article.id} }">-->
+                            <img th:src=" 'data:image/;base64,' + ${image}" class="d-block w-100 carousel-image" th:alt="${article.title}" />
+                        <!--</a>-->
+                        <!--<div class="carousel-caption d-none d-md-block">
+                            <h5 th:text="${article.title}">Titolo Articolo</h5>
+                        </div>-->
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#articleCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#articleCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div class="rating-container" th:if="${isReview}"> <!--class="col-md-6" serve?-->
+
+                
+                    <div class="row">
+                        <div class="col">
+                            <p th:text="@{ ${article.journalist.name} + ' ' + ${article.journalist.surname} + ' -FRESHGAMES ' }">_nameJournalist-FRESHGAMES_</p>
+                            <p class="rating freshGame" th:if="${reviewValueIsZero}">0.0</p>
+                            <p class="rating freshGame" th:if="${reviewValue}" th:text="${reviewValue}">_valueReview_</p> <!--th:each="review : ${game.reviews}" th:if="${review.journalist != null}" th:text="${review.value}"-->
+                            <p class="rating freshGame" th:if="${reviewValue == null}">S.V.</p> <!--th:unless="${averageJournalistReviewsValue}-->
+                        </div>
+                    </div>
+
+                    <!--<div class="row slider-container" th:if="${loggedJournalistReview}">
+                        <div class="col">
+                            <form th:action="@{ '/logged/reviewData/' + ${game.id} }" th:object="${loggedJournalistReview}" method="post" id="reviewForm">
+                                <input type="range" class="custom-slider"  min="0" max="10"  step="0.1" th:field="${loggedJournalistReview.value}"  oninput="updateRating(this.value)" onchange="submitRating(this.value)">
+                                <input type="hidden" name="updateReview" value=true />
+                                <input type="hidden" name="updateReviewId" th:value="${loggedJournalistReview.id}" />
+                            </form>
+                        </div>
+                    </div>-->
+
+            </div>
+
+        </div>
+    </body>
+</html>
