@@ -204,7 +204,7 @@
                 </div>
             </div>
 
-            <hr class="dropdown-divider">
+            <hr class="dropdown-divider" th:unless="${game.description == null || game.description == ''}">
 
             <div th:unless="${game.description == null || game.description == ''}">
                 <p  class="row" style="justify-content: space-around;" ><strong class="text-white">Descrizione:</strong></p> <!--style="padding-left: 80px;"-->
@@ -214,7 +214,7 @@
                 </div>
             </div>
 
-            <hr class="dropdown-divider">
+            <hr class="dropdown-divider" th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}">
 
             <!--courosel-->
             <div id="gameCarousel" class="carousel slide" data-ride="carousel" th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}">
@@ -272,7 +272,7 @@
             <div class="mainArticlesContainer">
                 <section class="articles-section">
                     <div class="articles-list">
-                        <article th:if="${reviewArticle != null}" class="article-item">
+                        <article th:if="${reviewArticle != null}" class="article-item article-item-animation">
                             <img th:src=" 'data:image/;base64,' + ${reviewArticle.imagesBase64[0]}" th:alt="${game.name} + ' foto' ">
                             <div class="article-content">
                                 <span th:each=" tag : ${reviewArticle.tags}" th:class=" 'category-' + ${tag} " th:text="#{ ${tag} }">_tag_</span> <!--da mettere più categorie-->

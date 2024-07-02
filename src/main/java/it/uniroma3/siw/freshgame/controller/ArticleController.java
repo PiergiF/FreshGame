@@ -38,6 +38,8 @@ import it.uniroma3.siw.freshgame.service.ReviewService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -66,6 +68,7 @@ public class ArticleController {
     @GetMapping("/all/allArticlesPage")
     public String getAllArticlePage(Model model) {
         model.addAttribute("articles", this.articleService.getAllArticlesOrderedByDateTime());
+        //per la sub navbar
         model.addAttribute("genres", Genres.values());
         model.addAttribute("tags", Tags.values());
         model.addAttribute("platforms", Platforms.values());
@@ -87,7 +90,7 @@ public class ArticleController {
     }
 
     @GetMapping("/all/articlePage/{id}")
-    public String getMethodName(@PathVariable("id")Long articleId, Model model) {
+    public String getArticlePage(@PathVariable("id")Long articleId, Model model) {
         Article article = this.articleService.getArticleById(articleId);
         model.addAttribute("article", article);
 
@@ -175,6 +178,119 @@ public class ArticleController {
         }
     }
     
+    @GetMapping("/journalist/editArticlePage/{id}")
+    public String getEditArticlePage(@PathVariable("id") Long articleId, Model model) {
+        Article article = this.articleService.getArticleById(articleId);
+
+        if(article.getJournalist().getId() == model.getAttribute("loggedId")){
+            model.addAttribute("article", article);
+            model.addAttribute("date", LocalDate.now());
+
+            //nel caso sia una recensione
+            for (Tags tag : article.getTags()) {
+                if(tag == Tags.REVIEWS){
+                    model.addAttribute("isReview", true);
+                    Journalist j = article.getJournalist();
+                    for(Review r : j.getReviews()){
+                        if(r.getGame().equals(article.getGame())){
+                            Float value = r.getValue();
+                            model.addAttribute("reviewValue", value);
+                            if(value == 0){
+                                model.addAttribute("reviewValueIsZero", true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //per la sub navbar
+            model.addAttribute("genres", Genres.values());
+            model.addAttribute("tags", Tags.values()); //questo mi serve
+            model.addAttribute("platforms", Platforms.values());
+
+            return "journalist/editArticlePage.html";
+        }
+        else{
+            return"redirect:/";
+        } 
+    }
+
+    @PostMapping("/journalist/articleEditData/{id}")
+    public String postMethodName(@PathVariable("id")Long articleId, 
+                                    @Valid @ModelAttribute Article article, BindingResult bindingResultArticle, Model model,
+                                    @RequestParam("newImages") MultipartFile[] newFiles,
+                                    @RequestParam(required = false, value = "removeImageIndexes") List<Integer> removeImageIndexes,
+                                    @RequestParam(required = false, name = "reviewValue") Float reviewValue,
+                                    @RequestParam(required = false, name = "oldReview") Float oldReview)
+    {
+        if (bindingResultArticle.hasErrors()) {
+            return "redirect:/journalist/articleEditData/" + articleId;
+        }
+
+        Article existingArticle = this.articleService.getArticleById(articleId);
+        if (existingArticle == null) {
+            // Gestisce il caso in cui l'articolo non esiste
+            return "redirect:/errorPage";
+        }
+        if(existingArticle.getJournalist().getId() == model.getAttribute("loggedId")){
+            existingArticle.setTitle(article.getTitle());
+            existingArticle.setBody(article.getBody());
+            existingArticle.setIntroduction(article.getIntroduction());
+            existingArticle.setTags(article.getTags());
+
+            //rimuovi immagini
+            if(removeImageIndexes != null){
+                for(int index : removeImageIndexes){
+                    existingArticle.getImagesBase64().remove(index);
+                }
+            }
+
+            //aggiungi immagini
+            if(newFiles != null){
+                for(MultipartFile newFile : newFiles){
+                    if(!newFile.isEmpty()){
+                        try{
+                            byte[] byteFoto = newFile.getBytes();
+                            existingArticle.getImagesBase64().add(Base64.getEncoder().encodeToString(byteFoto));
+                        }catch(IOException e){
+                            //model.addAttribute("message", "Recipe upload failed!");
+                            return "chef_admin/addRecipePage.html";
+                        }
+                    }
+                }
+            }
+
+
+            if(reviewValue != null){
+                Journalist journalist = article.getJournalist();
+                List<Review> allReview = journalist.getReviews();
+                Review r;
+                boolean change = false;
+                for(int i=0;i<allReview.size();i++){
+                    r = allReview.get(i);
+                    if(r.getGame().equals(article.getGame())){
+                        allReview.get(i).setValue(reviewValue);
+                        this.reviewService.save(allReview.get(i));
+                        change = true;
+                    }
+                }
+                if(!change){
+                    Review review = new Review();
+                    review.setValue(reviewValue);
+                    review.setGame(article.getGame());
+                    review.setJournalist(journalist);
+                    this.reviewService.save(review);
+                }
+            }
+
+            this.articleService.save(existingArticle);
+
+            return "redirect:/all/articlePage/" + articleId;
+
+        }else{
+            return "/";
+        }
+    }
     
 
 }

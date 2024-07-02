@@ -5,6 +5,11 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--jQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+        <!--mio script-->
         <script th:inline="javascript" src="/javascript/script.js"></script>
 
         <!--bootstrap-->
@@ -13,7 +18,7 @@
         <!--fac simile-->
         <div class="referenceForJSClone">
             <span id="tagReference" class="mb-3">
-                <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" required>
+                <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" onchange="addReviewValue(this)" required>
                     <option value="" selected disabled>Seleziona il tag</option>
                     <option th:each="tag : ${tags}" th:value="${tag}" th:text="#{ ${tag} }">_tag_</option>
                 </select>
@@ -67,7 +72,7 @@
         <div class="container mt-5 container-custom"> <!--container container-custom-->
             <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{createArticle.caption}">_createArticle.caption_</h1>
             <h6 class="text-center" th:if="${param.error != null}" style="color: red">Non è possibile creare due articoli Recensione sullo stesso gioco</h6>
-            <form th:action="@{/journalist/articleData}" th:object="${newArticle}" method="POST" id="formNewArticle" enctype="multipart/form-data">
+            <form th:action="@{/journalist/articleData}" th:object="${newArticle}" method="POST" id="formArticleData" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title" class="text-white">Titolo Articolo:</label>
                     <input type="text" id="title" name="title" th:field="${newArticle.title}" class="form-control" required/>
@@ -83,14 +88,14 @@
                     <label for="journalist" class="text-white">Giornalista:</label>
 
                     <select th:case=" 'JOURNALIST' " th:field="${newArticle.journalist}" disabled class="disabledJournalistChoise form-control">
-                        <option th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}" selected>_JournalistName&Surname_</option>
+                        <option th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}" selected>_JournalistNameAndSurname_</option>
                         <input type="hidden" id="journalist" name="journalist" th:value="${journalist.id}"/>
                     </select>
 
                     <!--
-                    <select th:case=" 'ADMINISTRATOR' " th:field="${recipe.chef}" class="form-control" required>
-                        <option value="" selected disabled>Seleziona uno chef</option>
-                        <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}">_ChefName&Surname_</option>
+                    <select th:case=" 'ADMINISTRATOR' " th:field="${newArticle.journalist}" class="form-control" required>
+                        <option value="" selected disabled>Seleziona un giornalista</option>
+                        <option th:each="journalist : ${journalists}" th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}">_journalistNameAndSurname_</option>
                     </select>
                     -->
                     
@@ -173,7 +178,7 @@
                     <textarea id="description" name="description" th:field="${recipe.description}" class="form-control"></textarea>
                 </div>
                 -->
-                <button id="createArticleButton" type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
+                <button id="confirmArticleButton" type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
             </form>
         </div>
 

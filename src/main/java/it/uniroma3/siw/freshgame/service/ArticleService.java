@@ -197,4 +197,15 @@ public class ArticleService {
         return resultReviewArticle;
     }
 
+    public List<Article> getAllReviewArticlesByJournalist(Journalist journalist){
+        List<Article> allJournalistArticles = this.getAllArticlesByJournalist(journalist);
+        List<Article> resultReviewsArticles = new ArrayList<>();
+        for(Article a : allJournalistArticles){
+            if(a.getTags().contains(Tags.REVIEWS)){
+                resultReviewsArticles.add(a);
+            }
+        }
+        return resultReviewsArticles;
+    }
+
 }

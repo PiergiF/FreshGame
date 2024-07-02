@@ -251,6 +251,17 @@ public class GameController {
         model.addAttribute("platforms", Platforms.values());
         return "all/platformPage.html";
     }
+
+    @GetMapping("/all/genrePage/{genre}")
+    public String getGenrePage(@PathVariable("genre") Genres genre, Model model) {
+        model.addAttribute("games", this.gameService.getAllGamesByGenre(genre));
+        model.addAttribute("genre", genre);
+        //per la sub navbar
+        model.addAttribute("genres", Genres.values());
+        model.addAttribute("tags", Tags.values());
+        model.addAttribute("platforms", Platforms.values());
+        return "all/genrePage.html";
+    }
     
 
 }

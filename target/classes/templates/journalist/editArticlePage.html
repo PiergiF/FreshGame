@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--jQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+        <!--mio script-->
+        <script th:inline="javascript" src="/javascript/script.js"></script>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <style>
+            .carousel-item img {
+                max-height: 400px;
+                object-fit: cover;
+            }
+        </style>
+
+        <!--fac simile-->
+        <div class="referenceForJSClone">
+            <span id="tagReference" class="mb-3">
+                <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" onchange="addReviewValue(this)" required>
+                    <option value="" selected disabled>Seleziona il tag</option>
+                    <option th:each="tag : ${tags}" th:value="${tag}" th:text="#{ ${tag} }">_tag_</option>
+                </select>
+                <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
+            </span>
+        </div>
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
+            <nav class="nav nav-underline justify-content-between">
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+        <div class="container mt-5 container-custom">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Modifica Articolo</h1>
+            <form th:action="@{'/journalist/articleEditData/' + ${article.id}}" th:object="${article}" method="POST" id="formArticleData" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title" class="text-white">Titolo:</label>
+                    <input type="text" id="title" name="title" th:field="${article.title}" class="form-control"/>
+                </div>
+
+                
+                <div class="form-group">
+                    <h3 class="text-white">Immagini Correnti:</h3>
+                    <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#imagesCarousel" data-slide-to="0" class="active"></li>
+                            <li th:each="base64, iterStat : ${article.imagesBase64}" th:if="${iterStat.index > 0}" data-target="#imageCarousel" th:data-slide-to="${iterStat.index}"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div th:each="base64, iterStat : ${article.imagesBase64}" th:class="'carousel-item ' + (${iterStat.index} == 0 ? 'active carousel-item' + ${iterStat.index} : 'carousel-item' +${iterStat.index} )" th:data-index="${iterStat.index}">
+                                <img th:src=" 'data:image/;base64,' + ${base64}" class="d-block w-100" alt="Recipe Image"/>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <button type="button" class="btn btn-danger" th:onclick=" 'removeImageFromArticle(this, ' + ${iterStat.index} + ')' ">Rimuovi</button>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="text-white">Carica Immagini:</label>
+                    <input type="file" id="images" name="newImages" class="form-control-file" multiple>
+                </div>
+                
+
+                <div th:switch="${accountRole}" class="form-group">
+
+                    <label for="journalist" class="text-white">Giornalista:</label>
+
+                    <select th:case=" 'JOURNALIST' " th:field="${article.journalist}" disabled class="disabledJournalistChoise form-control">
+                        <option th:value="${article.journalist.id}" th:text="${article.journalist.name} + ' ' + ${article.journalist.surname}" selected>_JournalistNameAndSurname_</option>
+                        <input type="hidden" th:field="${article.journalist}" th:value="${article.journalist.id}"/>
+                    </select>
+
+
+                    <!--<select th:case=" 'ADMINISTRATOR' " th:field="${recipe.chef}" class="form-control">
+                        <option th:value="${recipe.chef.id}" th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" selected>_OldChefName&Surname_</option>
+                        <option th:each="c : ${chefs}" th:unless="${recipe.chef.id} == ${c.id}" th:value="${c.id}" th:text="${c.name} + ' ' + ${c.surname}">_ChefName&Surname_</option>
+                    </select>-->
+
+                </div>
+
+                <div class="form-group">
+                    <label for="date" class="text-white">Data:</label>
+                    <input type="date" id="date" name="date" th:value="${date}" class="form-control" required disabled/>
+                    <input type="hidden" id="date" name="date" th:value="${date}">
+                </div>
+
+                <div class="form-group">
+                    <label for="game" class="text-white">Riguardo al Gioco:</label>
+                    <select th:field="${article.game}" class="form-control" disabled>
+                        <option th:value="${article.game.id}" th:text="${article.game.name}" selected>_gameName_</option>
+                        <input type="hidden" th:field="${article.game}" th:value="${article.game.id}"/>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tagArticle" class="text-white">Tag:</label>
+                    <div id="tagsContainer">
+
+                        <!--<div id="tags" class="mb-3" th:each=" presentTag : ${article.tags}">-->
+
+                            <span class="mb-3" th:each=" presentTag : ${article.tags}">
+                                <select id="tags" name="tags" class="form-control d-inline-block" style="width: auto;" onchange="addReviewValue(this)" required> <!--th:field="${newArticle.tags}" style="width: auto;"-->
+                                    <option th:value="${presentTag}" th:text="#{ ${presentTag} }" selected></option>
+                                    <option th:each="tag : ${tags}" th:unless="${presentTag} == ${tag}" th:value="${tag}" th:text="#{ ${tag} }">_tag_</option>
+                                </select>
+                                <button type="button" class="btn btn-danger" onclick="removeTagField(this)">Rimuovi tag</button>
+                            </span>
+                    </div>
+                        <button type="button" class="btn btn-primary btn-sm btn-spacing" onclick="addTagField()">Aggiungi Tag</button>
+                    <!--</div>-->
+                </div>
+
+                <div class="form-group">
+                    <label for="introduction" class="text-white">Introduzione:</label>
+                    <textarea id="introduction" name="introduction" th:field="${article.introduction}" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="body" class="text-white">Corpo dell'articolo:</label>
+                    <textarea id="body" name="body" th:field="${article.body}" class="form-control"></textarea>
+                </div>
+
+
+                <div class="form-group" id="divReviewValue" th:if="${isReview}">
+                    <label for="review" class="text-white">Voto Recensione:</label>
+                    <input type="number" min="0" max="10" step="0.1" class="form-control" id="reviewValue" name="reviewValue" th:value="${reviewValue}" /> <!--th:field="${reviewValue}"-->
+                    <input type="hidden" th:value="${reviewValue}" name="oldReview" />
+                </div>
+
+                <button type="submit" class="btn btn-primary custom-btn" id="confirmArticleButton">Modifica Articolo</button>
+            </form>
+        </div>
+
+
+    </body>
+</html>

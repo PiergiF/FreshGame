@@ -83,25 +83,11 @@
             </nav>
         </div>
 
-        <!--giochi inerenti la piattaforma-->
-
-        <!--<div class="container container-custom" th:each="game : ${games}"> <!--class="container"
-            <h1 th:text="${game.name}" class="text-white text-center">_nameGame_</h1>
-            <div class="row review-container"> <!--class="rating-container"
-                <div class="col-md-4" th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}"> <!--se if pure qua, se non c'è l'immagine, il blocco voto va al centro--> <!--class="col-md-2"
-                    <img th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}" 
-                                th:src=" 'data:image/;base64,' + ${game.imagesBase64[0]} " alt="Game Cover" class="img-fluid img-game">
-                </div>
-                <div class="col-md-6"> <!--class="col-md-4"
-                    <p><strong class="text-white">Data di uscita:</strong> <span th:text="${game.releaseDate}" class="text-white">_relaseDate_</span></p>
-                    <p><strong class="text-white">Piattaforme:</strong> <span th:each="platform : ${game.platforms}" ><a href="#" th:text="${platform}" class="platforms" style="text-decoration: none;">_Platform_</a>&ensp;</span></p>
-                </div>
-            </div>
-        </div>-->
-
-        <!--giochi inerenti la piattaforma-->
+        <!--giochi inerenti il genere-->
         <div class="container mt-5 container-custom">
-            <h1 th:text="${platform}" class="text-white text-center"></h1>
+            <h1 th:text="${genre}" class="text-white text-center"></h1>
+            <div th:if="${ games == null || games.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti giochi ' + ${genre} + ' nel sistema.'"></div>
+            
             <div class="mainArticlesContainer">
                 <section class="articles-section">
                     <div class="articles-list">
@@ -124,7 +110,5 @@
                 </section>
             </div>
         </div>
-
-
     </body>
 </html>

@@ -60,8 +60,6 @@
         <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
 
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
-
                 <ul class="header_account_menu">
                     <li>
                         <span class="nav-item nav-link link-body-emphasis active">Tag</span>
@@ -89,16 +87,21 @@
 
         <div class="container mt-5 container-custom">
             <h1 th:text="${article.title}" class="text-white text-center">_titleArticle_</h1>
-            <h4 th:text="${article.introduction}" class="text-white">_introductionArticle_</h4>
+            <h4 th:text="${article.introduction}" class="text-gray" style="word-wrap: break-word; margin: 10px;">_introductionArticle_</h4>
             <img th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}" 
-            th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " alt="Article Cover"  class="principal-image-article"/> <!-- class="d-block w-100" class momentanea-->
-            <div>
-                <span th:each=" tag : ${article.tags}" style="padding-left: 20%;"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } " >_tag_</a>&emsp;</span> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
+            th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " alt="Article Cover"  class="principal-image-article" style="margin-top: 10px;"/> <!-- class="d-block w-100" class momentanea-->
+            
+            <div style="padding-left: 20%; margin-top: 10px;">
+                <span th:each=" tag : ${article.tags}" ><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } " >_tag_</a>&emsp;</span> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
             </div>
 
-            <br>
-            <h5 th:text="${article.body}" class="rating-container">_bodyArticle_</h5> <!--class="text-white"-->
-            <br>
+            <div>
+                <h4><a th:href="@{ '/all/gamePage/' + ${article.game.id} }" class="custom-link-game-article" th:text="${article.game.name}">_gameName_</a></h4> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
+            </div>
+
+            <div class="important-text-container" style="margin: 10px;">
+                <h5 th:text="${article.body}" class="rating-container">_bodyArticle_</h5> <!--class="text-white"-->
+            </div>
 
             <div id="articleCarousel" class="carousel slide" data-ride="carousel" th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}">
                 <ol class="carousel-indicators">
@@ -125,12 +128,12 @@
                 </a>
             </div>
 
-            <div class="rating-container" th:if="${isReview}"> <!--class="col-md-6" serve?-->
+            <div class="rating-container" th:if="${isReview}" style="margin-top: 10px;"> <!--class="col-md-6" serve?-->
 
                 
                     <div class="row">
-                        <div class="col">
-                            <p th:text="@{ ${article.journalist.name} + ' ' + ${article.journalist.surname} + ' -FRESHGAMES ' }">_nameJournalist-FRESHGAMES_</p>
+                        <div class="col text-center">
+                            <p th:text="@{ ${article.journalist.name} + ' ' + ${article.journalist.surname} + ' - FRESHGAMES ' }">_nameJournalist-FRESHGAMES_</p>
                             <p class="rating freshGame" th:if="${reviewValueIsZero}">0.0</p>
                             <p class="rating freshGame" th:if="${reviewValue}" th:text="${reviewValue}">_valueReview_</p> <!--th:each="review : ${game.reviews}" th:if="${review.journalist != null}" th:text="${review.value}"-->
                             <p class="rating freshGame" th:if="${reviewValue == null}">S.V.</p> <!--th:unless="${averageJournalistReviewsValue}-->

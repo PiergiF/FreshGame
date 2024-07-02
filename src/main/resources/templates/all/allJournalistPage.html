@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' }">
+                                    <a href="/editor/allJournalistPage"> Tutti i giornalisti</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;">
+            <nav class="nav nav-underline justify-content-between">
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+
+
+
+        <div class="container mt-5 container-custom">
+            <h1 class="text-white text-center">Tutti i giornalisti</h1> <!--class="h3 mb-3 font-weight-normal text-center text-white"-->
+            <div th:if="${ journalists==null || journalists.isEmpty() }" class="alert alert-warning text-center">Non sono presenti giornalisti nel sistema</div>
+            <div class="courses-section">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="journalist : ${journalists}">
+                            <!--<div class="course-icon mx-auto"></div>-->
+                            <div class="journalist-card">
+                                <a th:href="@{'/all/journalistPage' + '/' + ${journalist.id}}">
+                                    <img th:src=" 'data:image/;base64,' + ${journalist.imageBase64} " class="course-icon mx-auto" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"/>
+                                </a>
+                                <div class="journalist-info">
+                                    <a th:href="@{'/all/journalistPage' + '/' + ${journalist.id}}" class="btn course-btn" th:text="${journalist.name} + ' ' + ${journalist.surname}" >_nameAndsurnameJournalist_</a> <!--style="color: white;"-->
+                                    <a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/editjournalistPage/' + ${journalist.id}}" class="btn btn-primary btn-sm btn-spacing">Modifica</a>
+
+                                    <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
+                                        <a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/removeCredentialsJournalist/' + ${journalist.id}}" class="btn btn-danger btn-sm btn-spacing" style="background-color: orange;">Rimuovi accesso</a>
+                                        <a th:if="${accountRole == 'EDITOR'}" th:href="@{'/editor/removeTotalJournalist/' + ${journalist.id}}" class="btn btn-danger btn-sm" id="removeJournalistButton">Rimuovi</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

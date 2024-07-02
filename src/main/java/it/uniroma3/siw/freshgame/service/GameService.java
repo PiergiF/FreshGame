@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.freshgame.model.Article;
 import it.uniroma3.siw.freshgame.model.Game;
+import it.uniroma3.siw.freshgame.model.Genres;
 import it.uniroma3.siw.freshgame.model.Platforms;
 import it.uniroma3.siw.freshgame.repository.GameRepository;
 
@@ -51,6 +52,19 @@ public class GameService {
         for(Game game : all){
             gamePlatforms = game.getPlatforms();
             if(gamePlatforms.contains(platform)){
+                result.add(game);
+            }
+        }
+        return result;
+    }
+
+    public List<Game> getAllGamesByGenre(Genres genre){
+        List<Game> all = this.getAllGames();
+        List<Genres> gameGenres = new ArrayList<>();
+        List<Game> result = new ArrayList<>();
+        for(Game game : all){
+            gameGenres = game.getGenres();
+            if(gameGenres.contains(genre)){
                 result.add(game);
             }
         }

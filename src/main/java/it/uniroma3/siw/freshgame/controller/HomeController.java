@@ -59,6 +59,8 @@ public class HomeController {
         //model.addAttribute("orderedArticles", this.articleService.getAllArticlesOrderedByDate());
         //model.addAttribute("couroselArticles", this.articleService.getNArticlesOrderedByDate(5));
         model.addAttribute("couroselArticles", this.articleService.getNArticlesOrderedByDateTime(5));
+        model.addAttribute("allArticle", this.articleService.getAllArticlesOrderedByDateTime());
+        model.addAttribute("allStaff", this.journalistService.getAllJournalists());
         return "homePage.html";
         //return "homePage2.html";
     }
@@ -102,9 +104,9 @@ public class HomeController {
                                 @Valid @ModelAttribute("newCredentials") Credentials newCredentials, BindingResult newCredentialsBindingResult,
                                 @RequestParam("changePassword") String changePassword, @RequestParam("changeUsername") String changeUsername,
                                 @RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "surname") String surname,
+                                @RequestParam(required = false, value = "bio") String bio, @RequestParam(required = false, value = "gamertag") String gamertag,
                                 @RequestParam(required = false, value = "journalistImage") MultipartFile journalistImage) //@RequestParam("removeImage") String remove, 
     {
-        //@ModelAttribute("user") Customer cuUser, @ModelAttribute("user") Chef cUser, @ModelAttribute("user") Administrator aUser)
         
     //passwordEncoder.matches cripta la password inserita e verifica se è uguale a quella già criptata sul database
         if(!nCredentialsBindingResult.hasErrors() && !newCredentialsBindingResult.hasErrors()) {
@@ -124,6 +126,8 @@ public class HomeController {
                 Journalist existingJournalist = credentials.getJournalist();
                 existingJournalist.setName(name);
                 existingJournalist.setSurname(surname);
+                existingJournalist.setBio(bio);
+                existingJournalist.setGamertag(gamertag);
 
                 //System.out.println("1111AOOOOOO");
                 //System.out.println(file);

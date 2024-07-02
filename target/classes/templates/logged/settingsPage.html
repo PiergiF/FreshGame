@@ -143,16 +143,17 @@
                                 <input type="text" th:value="${user.surname}" name="surname" class="form-control"/>
                             </div>
                         </div>
-                        <!--<div class="form-row">
+                        <div class="form-row" th:if="${accountRole == 'JOURNALIST'}">
                             <div class="form-group col-md-6">
-                                <label th:text="#{email}" class="text-white"> _email_</label>
-                                <input type="email" th:value="${user.email}" name="email" class="form-control"/>
+                                <label class="text-white">Bio:</label>
+                                <!--<input type="text" th:value="${user.bio}" name="bio" class="form-control"/>-->
+                                <textarea id="bio" name="bio" th:field="${user.bio}" class="form-control"></textarea>
                             </div>
                             <div class="form-group col-md-6">
-                                <label th:text="#{dateOfBirth}" class="text-white"> _dateOfBirth_</label>
-                                <input type="date" th:value="${user.dateOfBirth}" name="dateOfBirth" class="form-control"/>
+                                <label class="text-white">Gamertag:</label>
+                                <input type="text" th:value="${user.gamertag}" name="gamertag" class="form-control"/>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
     
@@ -162,11 +163,11 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label for="journalistImage" class="text-white">Cambia Foto da Giornalista:</label>
-                                <input type="file" class="form-control-file" id="chefImage" name="chefImage"/>
+                                <input type="file" class="form-control-file" id="journalistImage" name="journalistImage"/>
                             </div>
                             <div class="col-md-6 d-flex justify-content-center align-items-center" th:unless="${user.imageBase64 == null || user.imageBase64.isEmpty()}">
                                 <label class="text-white">Immagine attuale:</label><br>
-                                <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-chefImage" alt="actualChefImage"/><!--id="actualChefImage"-->
+                                <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-journalistImage" alt="actualJournalistImage"/><!--id="actualChefImage"-->
                                 <!--<input type="hidden" name="removeImage" value="false"/>-->
                                 <!--<button type="button" class="btn btn-secondary btn-sm" onclick="settingsChangeImageChef(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>-->
                             </div>
@@ -203,6 +204,7 @@
                         </div>
                     </div>
                 </div>
+
                 <button type="submit" class="btn btn-lg btn-primary btn-block custom-btn mt-4">Salva Modifiche</button>
             </form>
         </div>

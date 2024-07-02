@@ -14,6 +14,10 @@
         color: white !important;
     }
 
+    .text-gray{
+        color: gray;
+    }
+
     .text-cream{
         color: #EBEFBF;
     }
@@ -33,6 +37,15 @@
         /*color: #453F60;*/
         /*color: #907396;*/
         color: #401F3E;
+    }
+
+    .custom-link-game-article{
+        color: #D664BE;
+    }
+
+    .custom-link-game-article:hover{
+        color: #be41a3;
+        text-decoration: none;
     }
 
     .custom-btn{
@@ -60,6 +73,11 @@
 
     .background-blue{
         background-color: #453F78;
+    }
+
+    /*#### Javascript ####*/
+    .referenceForJSClone{
+        display: none;
     }
 
     /*#### global articles ####*/
@@ -197,6 +215,20 @@
         background: #d32f2f;
     }
 
+    a.modify-button{
+        padding: 10px 15px;
+        background: chocolate;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 16px;
+    }
+
+    a.modify-button:hover {
+        background: rgb(170, 90, 20);
+    }
+
 /*#### global games####*/
     .platform-games-section-PS4{
         background: #007bff;
@@ -277,10 +309,88 @@
         display: inline-block;
     }
 
-    /*#### Javascript ####*/
-    .referenceForJSClone{
-        display: none;
+    
+    /*#### genres aside ####*/
+    .genres-aside {
+        /*flex: 20%;
+        background: #9da2ab;
+        padding: 20px;
+        margin-right: 20px;*/
+        
+        /*padding-left: 5%;*/
+
+        padding-left: 3%;
+
+        margin-right: 10px;
+
+        /*padding-right: 5%;*/
     }
+    
+    .genres-aside h3 {
+        color: #3f2e56;
+        /*font-size: 20px;*/
+        margin-top: 0;
+    }
+    
+    .genres-aside ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .genres-aside ul li {
+        background: #453f78;
+        color: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+
+        /*width: 150%;*/
+    }
+
+    /*####aside team ####*/
+
+    /*
+    .staff-aside {
+        flex: 20%;
+        background: #9da2ab;
+        padding: 20px;
+        margin-right: 20px;
+    }
+    */
+
+    .our-editorial-staff {
+        /*background: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+
+        /*padding-right: 5%;*/
+
+        padding-right: 3%;
+
+        margin-left: 10px;
+    }
+    
+    .our-editorial-staff h3 {
+        margin-top: 0;
+        color: #3f2e56;
+    }
+
+    .our-editorial-staff ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .our-editorial-staff ul li {
+        background: #453f78;
+        color: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+
+        
+    }
+
 
 /*#### Header site ####*/
 
@@ -305,7 +415,7 @@
     }
 
     #header_logo_name{
-        padding-left: 200px;
+        padding-left: 150px; /*190*/
     }
 
     .header_navbar a{
@@ -389,6 +499,15 @@
         background-color: red;
         color: white !important;
     }
+
+
+/*#### Settings ####*/
+.settings-journalistImage {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    margin-left: 20px;
+}
 
 
 
@@ -713,6 +832,13 @@
         object-fit: cover;
     }
 
+    .important-text-container{
+
+        background-color: #dadde7;
+        padding: 10px;
+        border-radius: 8px;
+        word-wrap: break-word;
+    }
 
 
 
@@ -940,4 +1066,26 @@
 }
 .btn-platform-PC:hover{
     background-color: #6c757d !important;
+}
+
+
+/*#### journalist page ####*/
+.course-icon {
+    height: 200px; /* Altezza desiderata per le icone */
+    width: 200px; /* Larghezza desiderata per le icone */
+    background-color: #6c757d;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+/*#### button ####*/
+.course-btn {
+    /*background-color: #6c757d;*/
+    border: 1px solid #D664BE !important;
+    color: white !important;
+}
+.course-btn:hover {
+    /*background-color: #5a6268;*/
+    background: #D664BE;
+    /*color: black !important;*/
 }

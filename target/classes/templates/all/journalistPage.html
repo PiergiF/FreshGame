@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreshGame</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css?version=3"/>
+
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
+
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
+
+            <div class="search-login-container">
+                <form action="/search" method="get">
+                    <input type="search" name="query" class="search-input" placeholder="Search...">
+                </form>
+
+                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom text-white">Accedi</a>
+
+                <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                    <ul class="header_account_menu">
+                        <li>
+                            <div class="btn btn-login-custom">
+                                <span th:text="${userDetails.username}" class="text-white">_Username_</span>
+                            </div>
+                            <ul class="header_account_dropDownMenu">
+                                <li>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recensioni</a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a href="/logout" id="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
+            <nav class="nav nav-underline justify-content-between">
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container container-custom"> <!--class="container"-->
+            <h1 th:text="${journalist.name} + ' ' + ${journalist.surname} " class="text-white text-center">_journalistNameAndSurname_</h1>
+            <div class="row review-container"> <!--class="rating-container"-->
+                <div class="col-md-4" th:unless="${journalist.imageBase64 == null || journalist.imageBase64.isEmpty()}"> <!--se if pure qua, se non c'è l'immagine, il blocco bio va al centro--> <!--class="col-md-2"-->
+                    <img th:src=" 'data:image/;base64,' + ${journalist.imageBase64} " alt="Game Cover" class="course-icon mx-auto"> <!-- class="img-fluid img-game" th:unless="${journalist.imageBase64 == null || journalist.imageBase64.isEmpty()}"-->
+                </div>
+
+                <div class="col-md-6 important-text-container"> <!--class="row"-->
+                    <div th:if="${journalist.bio == null || journalist.bio == ''}">
+                        <p class="row" style="justify-content: space-around;" ><strong >Il Giornalista non ha inserito alcuna bio</strong></p>
+                    </div>
+                    <p th:unless="${journalist.bio == null || journalist.bio == ''}" class="row" style="justify-content: space-around;" ><strong >Bio:</strong></p>
+                    <h5 th:unless="${journalist.bio == null || journalist.bio == ''}" th:text="${journalist.bio}" class="text-center rating-container">_bodyArticle_</h5> <!--class="rating-container"-->
+                    <strong><p th:unless="${journalist.gamertag == null || journalist.gamertag == ''}" class="row" style="justify-content: space-around;" th:text=" 'Gamertag: ' + ${journalist.gamertag}"></p></strong>
+                </div>
+
+                <!--<div class="rating-container" th:unless="${journalist.bio == null || journalist.bio == ''}" style="word-wrap: break-word;">
+                    <p  class="row" style="justify-content: space-around;" ><strong class="text-white">Bio:</strong></p> <!--style="padding-left: 80px;"
+                    <div   th:unless="${journalist.bio == null || journalist.bio == ''}"> <!--style="justify-content: space-around;"
+                        <p th:text="${journalist.bio}" class="text-center"></p>
+                    </div>
+                </div>-->
+            </div>
+
+            <hr class="dropdown-divider">
+
+            <!--articoli recensione-->
+            <p class="row text-white" style="justify-content: space-around;"><strong >Recensioni:</strong></p>
+
+            <div th:if="${ reviewsArticles == null || reviewsArticles.isEmpty() }" class="alert alert-warning text-center" th:text=" 'Non sono presenti recensioni a firma di ' + ${journalist.name} + ' ' + ${journalist.surname} "></div>
+
+            <div class="mainArticlesContainer">
+                <section class="articles-section">
+                    <div class="articles-list">
+                        <article th:each=" article : ${reviewsArticles}" class="article-item article-item-animation">
+                            <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" th:alt="${article.title} + ' foto' ">
+                            <div class="article-content">
+                                <span th:each=" tag : ${article.tags}"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span> <!--da mettere più categorie-->
+                                <p><strong th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}">_articleDate_</strong> di <a th:href="@{ '/all/journalistPage/' + ${article.journalist.id} }" class="custom-link"><span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname} ">_journalistNameAndSurname_</span></a> </p> <!--0 Comments 2 minutes read dentro le p-->
+                                <h2><a th:href="@{ '/all/articlePage/' + ${article.id} }" th:text="${article.title}" class="custom-link">_titleArticle_</a></h2>
+                                <p th:text="${article.introduction}">_introductionArticle_</p>
+                                <!--<button class="read-more">Leggi di più</button>-->
+                                <a th:href="@{ '/all/articlePage/' + ${article.id} }" class="read-more decoration-test-none text-white-hover">Leggi di più</a>
+                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/editArticlePage/' + ${article.id} }" class="modify-button decoration-test-none text-white-hover"> Modifica</a></span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <hr class="dropdown-divider">
+
+            <!--tutti gli articoli-->
+            <p class="row text-white" style="justify-content: space-around;"><strong th:text=" 'Tutti gli articoli di ' + ${journalist.name} + ' ' + ${journalist.surname} + ':' ">_journalistNameAndSurname_</strong></p>
+
+            <div th:if="${ allArticles == null || allArticles.isEmpty() }" class="alert alert-warning text-center" th:text=" 'Non sono presenti articoli a firma di ' + ${journalist.name} + ' ' + ${journalist.surname} "></div>
+
+            <div class="mainArticlesContainer">
+                <section class="articles-section">
+                    <div class="articles-list">
+                        <article th:each=" article : ${allArticles}" class="article-item article-item-animation">
+                            <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" th:alt="${article.title} + ' foto' ">
+                            <div class="article-content">
+                                <span th:each=" tag : ${article.tags}"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span> <!--da mettere più categorie-->
+                                <p><strong th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}">_articleDate_</strong> di <a th:href="@{ '/all/journalistPage/' + ${article.journalist.id} }" class="custom-link"><span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname} ">_journalistNameAndSurname_</span></a> </p> <!--0 Comments 2 minutes read dentro le p-->
+                                <h2><a th:href="@{ '/all/articlePage/' + ${article.id} }" th:text="${article.title}" class="custom-link">_titleArticle_</a></h2>
+                                <p th:text="${article.introduction}">_introductionArticle_</p>
+                                <!--<button class="read-more">Leggi di più</button>-->
+                                <a th:href="@{ '/all/articlePage/' + ${article.id} }" class="read-more decoration-test-none text-white-hover">Leggi di più</a>
+                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/editArticlePage/' + ${article.id} }" class="modify-button decoration-test-none text-white-hover"> Modifica</a></span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </body>
+</html>

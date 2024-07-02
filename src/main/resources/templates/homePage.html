@@ -82,7 +82,16 @@
                                     <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -104,7 +113,7 @@
                 <!--<a class="nav-item nav-link link-body-emphasis active" href="/all/allNewsPage">News</a>
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Guide</a>
                 <a class="nav-item nav-link link-body-emphasis active" href="#">Recensioni</a>-->
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
+                <!--<a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>-->
 
                 <ul class="header_account_menu">
                     <li>
@@ -185,10 +194,63 @@
             </section>
         </main>
         -->
+
+        <!--<div class="container mt-5 container-custom">-->
+            <!--articoli-->
+            <div class="mainArticlesContainer">
+
+                <aside class="genres-aside mt-5">
+                    <h3>Generi videogame:</h3>
+                    <ul>
+                        <!--<li th:each="genre : ${genres}" class="article-item-animation"><a th:text="${genre}" th:href=" '/all/genrePage/' + ${genre} " class="custom-link"></li>-->
+                            <a th:each="genre : ${genres}" th:href=" '/all/genrePage/' + ${genre} " class="custom-link"> <li  th:text="${genre}" class="article-item-animation"></li></a>
+                    </ul>
+                </aside>
+
+                <div class="container mt-5 container-custom"> <!--container mt-5 container-custom-->
+                    <section class="articles-section">
+                        <div class="articles-list">
+                            <article th:unless="${allArticle == null || allArticle.isEmpty()}" th:each=" article : ${allArticle}" class="article-item article-item-animation">
+                                <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" th:alt="${article.title} + ' foto' ">
+                                <div class="article-content">
+                                    <span th:each=" tag : ${article.tags}"><a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span>&ensp; <!--da mettere più categorie-->
+                                    <span><strong><a th:href=" '/all/gamePage/' + ${article.game.id} " class="custom-link" th:text="${article.game.name}"></a></strong></span>
+                                    <p><strong th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}">_articleDate_</strong> di <a th:href="@{ '/all/journalistPage/' + ${article.journalist.id} }" class="custom-link"><span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname} ">_journalistNameAndSurname_</span></a> </p> <!--0 Comments 2 minutes read dentro le p-->
+                                    <h2><a th:href="@{ '/all/articlePage/' + ${article.id} }" th:text="${article.title}" class="custom-link">_titleArticle_</a></h2>
+                                    <p th:text="${article.introduction}" style="max-width: 60%;">_introductionArticle_</p>
+                                    <!--<button class="read-more">Leggi di più</button>-->
+                                    <a th:href="@{ '/all/articlePage/' + ${article.id} }" class="read-more decoration-test-none text-white-hover">Leggi di più</a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+
+
+                <aside class="our-editorial-staff mt-5"> <!--class="staff-aside mt-5"-->
+                    <!--<div class="advertisement">
+                        <img src="ad.jpg" alt="Advertisement">
+                        <p>No War Gaming</p>
+                    </div>-->
+                    <h3>I nostri Giornalisti:</h3>
+                    <!--<div class="our-editorial-staff">-->
+                        <ul>
+                            <a th:each="journalist : ${allStaff}" th:href=" '/all/journalistPage/' + ${journalist.id} " class="custom-link"> <li th:text="${journalist.name} + ' ' +${journalist.surname} " class="article-item-animation"></li></a>
+                            <a href="/all/allJournalistPage" class="custom-link"><li class="article-item-animation">Tutti i giornalisti</li></a>
+                        </ul>
+                        <!--<h3>Il nostro staff:</h3>
+                        <p>Get Latest Updates</p>-->
+                        <!--<form>
+                            <input type="email" placeholder="Enter Your Email">
+                            <button type="submit">Subscribe Now</button>
+                        </form>-->
+                    <!--</div>-->
+                </aside>
+
+            </div>
+
+        <!--</div>-->
         
-        
-        <a href="/journalist/createArticlePage"> nuova notizia</a>
-        <a href="/journalist_editor/addGamePage"> nuovo gioco</a>
 
 
         
