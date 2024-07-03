@@ -212,6 +212,10 @@ public class ArticleService {
         return resultReviewsArticles;
     }
 
+    public List<Article> searchArticles(String query) {
+        return articleRepository.findByTitleContainingIgnoreCase(query);
+    }
+
     public void deleteArticlesByJournalist(Journalist journalist){
         List<Article> articles = this.getAllArticlesByJournalist(journalist);
         for(Article article : articles){

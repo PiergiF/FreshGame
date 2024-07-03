@@ -13,6 +13,8 @@ public interface ArticleRepository extends JpaRepository<Article,Long>{
 
     public List<Article> findAllByJournalist(Journalist journalis);
     public List<Article> findAllByGame(Game game);
+    public List<Article> findByTitleContainingIgnoreCase(String query);
+
     //public List<Article> findAllByTags(Tags tags);
 
 }

@@ -71,4 +71,8 @@ public class GameService {
         return result;
     }
 
+    public List<Game> searchGames(String query) {
+        return gameRepository.findByNameContainingIgnoreCase(query);
+    }
+
 }

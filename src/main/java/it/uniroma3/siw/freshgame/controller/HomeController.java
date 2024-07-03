@@ -3,6 +3,7 @@ package it.uniroma3.siw.freshgame.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.uniroma3.siw.freshgame.model.Article;
 import it.uniroma3.siw.freshgame.model.Credentials;
 import it.uniroma3.siw.freshgame.model.Editor;
+import it.uniroma3.siw.freshgame.model.Game;
 import it.uniroma3.siw.freshgame.model.Genres;
 import it.uniroma3.siw.freshgame.model.Journalist;
 import it.uniroma3.siw.freshgame.model.Platforms;
@@ -27,6 +30,7 @@ import it.uniroma3.siw.freshgame.model.Tags;
 import it.uniroma3.siw.freshgame.service.ArticleService;
 import it.uniroma3.siw.freshgame.service.CredentialsService;
 import it.uniroma3.siw.freshgame.service.EditorService;
+import it.uniroma3.siw.freshgame.service.GameService;
 import it.uniroma3.siw.freshgame.service.JournalistService;
 import it.uniroma3.siw.freshgame.service.ReaderService;
 import jakarta.validation.Valid;
@@ -48,6 +52,9 @@ public class HomeController {
 
     @Autowired
     private EditorService editorService;
+
+    @Autowired
+    private GameService gameService;
 
     @GetMapping(value = "/")
     public String getHomePage(Model model){
@@ -165,6 +172,20 @@ public class HomeController {
         }
         
         return "redirect:/";
+    }
+
+
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String query, Model model) {
+        List<Game> games = this.gameService.searchGames(query);
+        List<Article> articles = this.articleService.searchArticles(query);
+        
+        //List<Chef> chefs = chefService.searchChefs(query);
+        //model.addAttribute("recipes", recipes);
+        model.addAttribute("games", games);
+        model.addAttribute("articles", this.articleService.orderSpecificArticleListByDateTime(articles));
+        //model.addAttribute("query", query);
+        return "all/searchResultsPage.html";
     }
 
 }

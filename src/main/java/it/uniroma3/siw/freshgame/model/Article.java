@@ -30,7 +30,7 @@ public class Article {
     @NotBlank
     private String introduction;
     @NotBlank
-    @Column(length = 1000)
+    @Column(length = 100000)
     private String body;
 
     //@NotNull
