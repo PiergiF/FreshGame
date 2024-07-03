@@ -14,9 +14,9 @@
     <body class="backgroundColorSite">
 
         <header class="header_navbar">
-            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
 
-            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
 
             <div class="search-login-container">
                 <form action="/search" method="get">
@@ -33,10 +33,19 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a href="#">Impostazioni</a>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -55,8 +64,6 @@
         <!--navbar sottostante-->
         <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
- 
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
 
                 <ul class="header_account_menu">
                     <li>
@@ -75,29 +82,14 @@
                         <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
                         <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
                             <li th:each=" platform : ${platforms}">
-                                <a href="#" th:text="${platform}">_platform_</a>
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
-
-        <!--giochi inerenti la piattaforma-->
-
-        <!--<div class="container container-custom" th:each="game : ${games}"> <!--class="container"
-            <h1 th:text="${game.name}" class="text-white text-center">_nameGame_</h1>
-            <div class="row review-container"> <!--class="rating-container"
-                <div class="col-md-4" th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}"> <!--se if pure qua, se non c'è l'immagine, il blocco voto va al centro--> <!--class="col-md-2"
-                    <img th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}" 
-                                th:src=" 'data:image/;base64,' + ${game.imagesBase64[0]} " alt="Game Cover" class="img-fluid img-game">
-                </div>
-                <div class="col-md-6"> <!--class="col-md-4"
-                    <p><strong class="text-white">Data di uscita:</strong> <span th:text="${game.releaseDate}" class="text-white">_relaseDate_</span></p>
-                    <p><strong class="text-white">Piattaforme:</strong> <span th:each="platform : ${game.platforms}" ><a href="#" th:text="${platform}" class="platforms" style="text-decoration: none;">_Platform_</a>&ensp;</span></p>
-                </div>
-            </div>
-        </div>-->
 
         <!--giochi inerenti la piattaforma-->
         <div class="container mt-5 container-custom">
@@ -105,26 +97,20 @@
             <div class="mainArticlesContainer">
                 <section class="articles-section">
                     <div class="articles-list">
-                        <article th:each=" game : ${games}" class="article-item article-item-animation"> <!--th:each=" game : ${games}"-->
+                        <article th:each=" game : ${games}" class="article-item article-item-animation">
                             <img th:unless="${game.imagesBase64 == null || game.imagesBase64.isEmpty()}" th:src=" 'data:image/;base64,' + ${game.imagesBase64[0]}" th:alt="${game.name} + ' foto' ">
                             <div class="article-content">
-                                <span th:each=" genre : ${game.genres}"><a class="genre-games-section decoration-test-none text-white-hover" th:text="${genre} ">_tag_</a>&emsp;</span> <!-- + '&emsp;' da mettere più categorie-->
+                                <span th:each=" genre : ${game.genres}"><a class="genre-games-section decoration-test-none text-white-hover" th:text="${genre} ">_tag_</a>&emsp;</span>
                                 <span th:each=" platform : ${game.platforms}"><span th:class=" 'platform-games-section-' + ${platform}" th:text="${platform}">_tag_</span>&emsp;</span>
-                                <!--<p>Data di uscita: <strong th:text="${#temporals.format(game.releaseDate, 'dd-MM-yyyy')}">_relaseDateGame_</strong> &emsp;<!--</p> <!--0 Comments 2 minutes read dentro le p
-                                <!--<p>Studio di sviluppo: <strong th:text="${game.softwareHouse}">_softwareHouseGame_</strong></p>-->
                                 <h2><a th:href="@{ '/all/gamePage/' + ${game.id} }" th:text="${game.name}" class="custom-link">_gameName_</a></h2>
-                                <p>Data di uscita: <strong th:text="${#temporals.format(game.releaseDate, 'dd-MM-yyyy')}">_relaseDateGame_</strong> &emsp; <!--0 Comments 2 minutes read dentro le p-->
+                                <p>Data di uscita: <strong th:text="${#temporals.format(game.releaseDate, 'dd-MM-yyyy')}">_relaseDateGame_</strong> &emsp;
                                 Studio di sviluppo: <strong th:text="${game.softwareHouse}">_softwareHouseGame_</strong></p>
-                                <!--<p th:text="${article.introduction}">_introductionArticle_</p>-->
-                                <!--<button class="read-more">Leggi di più</button>-->
-                                <!--<a th:href="@{ '/all/gamePage/' + ${game.id} }" class="read-more decoration-test-none text-white-hover">Vedi di più</a>-->
                             </div>
                         </article>
                     </div>
                 </section>
             </div>
         </div>
-
-
+        
     </body>
 </html>

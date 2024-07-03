@@ -40,7 +40,16 @@
                                     <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -82,6 +91,7 @@
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
 
@@ -122,13 +132,14 @@
                         <article th:each=" article : ${reviewsArticles}" class="article-item article-item-animation">
                             <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" th:alt="${article.title} + ' foto' ">
                             <div class="article-content">
-                                <span th:each=" tag : ${article.tags}"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span> <!--da mettere più categorie-->
+                                <span th:each=" tag : ${article.tags}"><a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span>&ensp; <!--da mettere più categorie-->
+                                <span><strong><a th:href=" '/all/gamePage/' + ${article.game.id} " class="custom-link" th:text="${article.game.name}"></a></strong></span>
                                 <p><strong th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}">_articleDate_</strong> di <a th:href="@{ '/all/journalistPage/' + ${article.journalist.id} }" class="custom-link"><span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname} ">_journalistNameAndSurname_</span></a> </p> <!--0 Comments 2 minutes read dentro le p-->
                                 <h2><a th:href="@{ '/all/articlePage/' + ${article.id} }" th:text="${article.title}" class="custom-link">_titleArticle_</a></h2>
                                 <p th:text="${article.introduction}">_introductionArticle_</p>
-                                <!--<button class="read-more">Leggi di più</button>-->
                                 <a th:href="@{ '/all/articlePage/' + ${article.id} }" class="read-more decoration-test-none text-white-hover">Leggi di più</a>
-                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/editArticlePage/' + ${article.id} }" class="modify-button decoration-test-none text-white-hover"> Modifica</a></span>
+                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/editArticlePage/' + ${article.id} }" class="modify-button decoration-test-none text-white-hover">Modifica</a></span>
+                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/removeArticle/' + ${article.id} }" class="delete-button decoration-test-none text-white-hover">Elimina</a></span>
                             </div>
                         </article>
                     </div>
@@ -148,13 +159,14 @@
                         <article th:each=" article : ${allArticles}" class="article-item article-item-animation">
                             <img th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]}" th:alt="${article.title} + ' foto' ">
                             <div class="article-content">
-                                <span th:each=" tag : ${article.tags}"><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span> <!--da mettere più categorie-->
+                                <span th:each=" tag : ${article.tags}"><a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } ">_tag_</a>&ensp;</span>&ensp; <!--da mettere più categorie-->
+                                <span><strong><a th:href=" '/all/gamePage/' + ${article.game.id} " class="custom-link" th:text="${article.game.name}"></a></strong></span>
                                 <p><strong th:text="${#temporals.format(article.dateTime, 'dd-MM-yyyy')}">_articleDate_</strong> di <a th:href="@{ '/all/journalistPage/' + ${article.journalist.id} }" class="custom-link"><span th:text="${article.journalist.name} + ' ' + ${article.journalist.surname} ">_journalistNameAndSurname_</span></a> </p> <!--0 Comments 2 minutes read dentro le p-->
                                 <h2><a th:href="@{ '/all/articlePage/' + ${article.id} }" th:text="${article.title}" class="custom-link">_titleArticle_</a></h2>
                                 <p th:text="${article.introduction}">_introductionArticle_</p>
-                                <!--<button class="read-more">Leggi di più</button>-->
                                 <a th:href="@{ '/all/articlePage/' + ${article.id} }" class="read-more decoration-test-none text-white-hover">Leggi di più</a>
                                 <span th:if="${isSelf}"><a th:href="@{ '/journalist/editArticlePage/' + ${article.id} }" class="modify-button decoration-test-none text-white-hover"> Modifica</a></span>
+                                <span th:if="${isSelf}"><a th:href="@{ '/journalist/removeArticle/' + ${article.id} }" class="delete-button decoration-test-none text-white-hover">Elimina</a></span>
                             </div>
                         </article>
                     </div>

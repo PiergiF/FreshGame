@@ -31,9 +31,9 @@
     <body class="backgroundColorSite">
 
         <header class="header_navbar">
-            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
 
-            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
 
             <div class="search-login-container">
                 <form action="/search" method="get">
@@ -50,10 +50,19 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a href="#">Impostazioni</a>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -68,6 +77,36 @@
                 </nav>
             </div>
         </header>
+
+        <!--navbar sottostante-->
+        <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
+            <nav class="nav nav-underline justify-content-between">
+
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Tag</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Tag">
+                            <li th:each=" tag : ${tags}">
+                                <a th:href="@{ '/all/allSpecificTagPage' + '/' + ${tag} }" th:text="#{ ${tag} }">_tag_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a class="nav-item nav-link link-body-emphasis active" href="/all/allGamesPage">Giochi</a>
+                <ul class="header_account_menu">
+                    <li>
+                        <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
+                        <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
+                            <li th:each=" platform : ${platforms}">
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
 
         <div class="container mt-5 container-custom"> <!--container container-custom-->
             <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{createArticle.caption}">_createArticle.caption_</h1>
@@ -91,13 +130,6 @@
                         <option th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}" selected>_JournalistNameAndSurname_</option>
                         <input type="hidden" id="journalist" name="journalist" th:value="${journalist.id}"/>
                     </select>
-
-                    <!--
-                    <select th:case=" 'ADMINISTRATOR' " th:field="${newArticle.journalist}" class="form-control" required>
-                        <option value="" selected disabled>Seleziona un giornalista</option>
-                        <option th:each="journalist : ${journalists}" th:value="${journalist.id}" th:text="${journalist.name} + ' ' + ${journalist.surname}">_journalistNameAndSurname_</option>
-                    </select>
-                    -->
                     
                 </div>
 
@@ -139,45 +171,6 @@
                     <textarea id="body" name="body" th:field="${newArticle.body}" class="form-control"></textarea>
                 </div>
 
-                <!--
-                <div class="form-group">
-                    <label th:text="#{ingredients} + ':'">_Ingredients_</label>
-                    <div id="ingredientsContainer">
-                        <div id="ingredients" class="mb-3">
-                            <span>
-                                <select class="form-control d-inline-block" name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" style="width: auto;" required>
-                                    <option value="" selected disabled>Seleziona un ingrediente</option>
-                                    <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
-                                    <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
-                                </select>
-                            </span>
-
-                            
-                            <input type="number" name="quantities" class="form-control d-inline-block" th:placeholder="#{quantity}" style="width: auto;" required/>
-
-                            <span>
-                                
-                                <select class="form-control d-inline-block" name="unitsName" id="unitSelect" onchange="addNewUnit(this)" style="width: auto;" required>
-                                    <option value="" selected disabled>Seleziona un'unità</option>
-                                    <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
-                                    <option value="add" id="addUnitOption">_AggiungiUnit_</option>
-                                </select>
-                            </span>
-
-                            <button type="button" class="btn btn-danger" onclick="removeIngredientField(this)" th:text="#{removeIngredient}">_Remove_</button>
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-primary btn-sm btn-spacing" onclick="addIngredientField()" th:text="#{addIngredient}">_AddIngredient_</button>
-                <br/><br/>
-
-                <div class="form-group">
-                    <label for="description" th:text="#{recipeDescription} + ':' ">_recipeDescription_</label>
-                    <textarea id="description" name="description" th:field="${recipe.description}" class="form-control"></textarea>
-                </div>
-                -->
                 <button id="confirmArticleButton" type="submit" class="btn btn-primary custom-btn">Crea Articolo</button>
             </form>
         </div>

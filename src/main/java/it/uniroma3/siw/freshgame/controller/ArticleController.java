@@ -65,17 +65,6 @@ public class ArticleController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping("/all/allArticlesPage")
-    public String getAllArticlePage(Model model) {
-        model.addAttribute("articles", this.articleService.getAllArticlesOrderedByDateTime());
-        //per la sub navbar
-        model.addAttribute("genres", Genres.values());
-        model.addAttribute("tags", Tags.values());
-        model.addAttribute("platforms", Platforms.values());
-        return "all/allArticlesPage.html";
-    }
-    
-
     @GetMapping("/all/allSpecificTagPage/{tag}")
     public String getAllNewsPage(@PathVariable("tag") Tags tag, Model model) {
         //model.addAttribute("allNews", this.articleService.getAllArticlesByTag(tag));
@@ -216,7 +205,7 @@ public class ArticleController {
     }
 
     @PostMapping("/journalist/articleEditData/{id}")
-    public String postMethodName(@PathVariable("id")Long articleId, 
+    public String editArticle(@PathVariable("id")Long articleId, 
                                     @Valid @ModelAttribute Article article, BindingResult bindingResultArticle, Model model,
                                     @RequestParam("newImages") MultipartFile[] newFiles,
                                     @RequestParam(required = false, value = "removeImageIndexes") List<Integer> removeImageIndexes,
@@ -291,6 +280,37 @@ public class ArticleController {
             return "/";
         }
     }
+
+
+     
+    @GetMapping("/journalist/removeArticle/{id}")
+    public String removeArticle(@PathVariable("id")Long articleId, Model model) {
+
+        Article article = this.articleService.getArticleById(articleId);
+        if (article == null) {
+            // Gestisce il caso in cui l'articolo non esiste
+            return "redirect:/errorPage";
+        }
+        if(article.getJournalist().getId() == model.getAttribute("loggedId")){
+            List<Tags> tags = article.getTags();
+            for(Tags t : tags){
+                if(t == Tags.REVIEWS){
+                    List<Review> gameReviews = article.getGame().getReviews();
+                    for(Review r : gameReviews){
+                        if(r.getJournalist() != null){
+                            if(r.getJournalist().equals(article.getJournalist())){
+                                this.reviewService.deleteById(r.getId());
+                            }
+                        }
+                    }
+                }
+            }
+            this.articleService.deleteById(articleId);
+        }
+
+        return "redirect:/all/journalistPage/" + article.getJournalist().getId();
+    }
+    
     
 
 }

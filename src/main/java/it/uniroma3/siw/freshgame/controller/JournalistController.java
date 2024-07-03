@@ -79,7 +79,7 @@ public class JournalistController {
     }
 
     @GetMapping("/editor/removeCredentialsJournalist/{id}")
-    public String removeCredentialsChef(@PathVariable("id") Long journalistId) {
+    public String removeCredentialsJournalist(@PathVariable("id") Long journalistId) {
         
         this.credentialsService.deleteByJournalistId(journalistId);
 
@@ -87,7 +87,7 @@ public class JournalistController {
     }
 
     @GetMapping("/editor/removeTotalJournalist/{id}")
-    public String removeTotalChef(@PathVariable("id") Long journalistId) {
+    public String removeTotalJournalist(@PathVariable("id") Long journalistId) {
 
         Journalist journalist = this.journalistService.getJournalistById(journalistId);
         this.credentialsService.deleteByJournalistId(journalistId);

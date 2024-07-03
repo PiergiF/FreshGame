@@ -14,9 +14,9 @@
     <body class="backgroundColorSite">
 
         <header class="header_navbar">
-            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
 
-            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
 
             <div class="search-login-container">
                 <form action="/search" method="get">
@@ -33,10 +33,19 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a href="#">Impostazioni</a>
+                                    <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -55,8 +64,6 @@
         <!--navbar sottostante-->
         <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
- 
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
 
                 <ul class="header_account_menu">
                     <li>
@@ -75,11 +82,12 @@
                         <span class="nav-item nav-link link-body-emphasis active">Piattaforme</span>
                         <ul class="header_account_dropDownMenu" id="subNavbar_dropDown_Platform">
                             <li th:each=" platform : ${platforms}">
-                                <a href="#" th:text="${platform}">_platform_</a>
+                                <a th:href=" '/all/platformPage/' + ${platform} " th:text="${platform}">_platform_</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
 

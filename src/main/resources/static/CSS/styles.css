@@ -229,6 +229,21 @@
         background: rgb(170, 90, 20);
     }
 
+
+    a.delete-button{
+        padding: 10px 15px;
+        background: red;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 16px;
+    }
+
+    a.delete-button:hover {
+        background: rgb(160, 7, 7);
+    }
+
 /*#### global games####*/
     .platform-games-section-PS4{
         background: #007bff;
@@ -415,7 +430,7 @@
     }
 
     #header_logo_name{
-        padding-left: 150px; /*190*/
+        padding-left: 190px;
     }
 
     .header_navbar a{

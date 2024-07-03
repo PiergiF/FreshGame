@@ -19,51 +19,9 @@
     <body class="backgroundColorSite">
 
         <header class="header_navbar">
-            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a> <!--class="logo-container"-->
+            <a href="/" ><img src="/images/logo/logo-icon.png" class="header_logo" id="header_logo" alt="Logo"/></a>
 
-            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a> <!--class="logo-name-container"-->
-
-            <!--
-            <div class="container-navbar">
-            <a href="/" class="logo-container"><img src="/images/logo/logo.png" class="header_logo" alt="Logo"/></a>
-
-            
-            <a href="#">Giochi</a> <!--class="nav-item nav-link link-body-emphasis active" 
-            <a href="#">Guide</a> <!--class="nav-item nav-link link-body-emphasis active"
-            <a href="#">Recensioni</a> <!--class="nav-item nav-link link-body-emphasis active"
-            <a href="#">Piattaforme</a>
-            <a href="#">Generi</a>
-            </div>
-            -->
-
-            <!--
-            <div class="search-login-container">
-                <form action="/search" method="get"> <!--class="search-container"
-                    <input type="search" name="query" class="search-input" placeholder="Search...">
-                </form>
-                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
-                <a th:if="${accountRole != 'ROLE_ANONYMOUS'}" class="btn btn-login-custom" th:text="${userDetails.username}">_Username_</a>
-                <!--<a th:if="${accountRole != 'ROLE_ANONYMOUS'}" href="/logout" class="btn btn-logout-custom" id="btn-logout-custom">Logout</a>-
-            </div>
-            -->
-
-            <!--
-            <div class="search-login-container">
-                <form action="/search" method="get"> <!--class="search-container"
-                    <input type="search" name="query" class="search-input" placeholder="Search...">
-                </form>
-                <a th:if="${accountRole == 'ROLE_ANONYMOUS'}" href="/loginPage" class="btn btn-login-custom">Accedi</a>
-                <div th:if="${accountRole != 'ROLE_ANONYMOUS'}" class="dropdown">
-                    <a href="#" class="btn btn-login-custom dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${userDetails.username}">_Username_</a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="/settings">Settings</a>
-                        <a class="dropdown-item" href="/reviews">Le mie recensioni</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
-                </div>
-            </div>
-            -->
+            <a href="/" ><img src="/images/logo/logo-name.png" class="header_logo_name" id="header_logo_name" alt="Logo name"/></a>
 
             <div class="search-login-container">
                 <form action="/search" method="get">
@@ -80,7 +38,16 @@
                             </div>
                             <ul class="header_account_dropDownMenu">
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -99,8 +66,6 @@
         <!--navbar sottostante-->
         <div class="container-navbar nav-scroller py-1 border-bottom" style="background-color: #401F3E;"> <!--tra le class: mb-3 ma crea lo spazio sotto-->
             <nav class="nav nav-underline justify-content-between">
-                
-                <a class="nav-item nav-link link-body-emphasis active" href="/all/allArticlesPage">Global</a>
 
                 <ul class="header_account_menu">
                     <li>
@@ -124,6 +89,7 @@
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
 
@@ -146,7 +112,6 @@
                         <div class="form-row" th:if="${accountRole == 'JOURNALIST'}">
                             <div class="form-group col-md-6">
                                 <label class="text-white">Bio:</label>
-                                <!--<input type="text" th:value="${user.bio}" name="bio" class="form-control"/>-->
                                 <textarea id="bio" name="bio" th:field="${user.bio}" class="form-control"></textarea>
                             </div>
                             <div class="form-group col-md-6">
@@ -167,9 +132,7 @@
                             </div>
                             <div class="col-md-6 d-flex justify-content-center align-items-center" th:unless="${user.imageBase64 == null || user.imageBase64.isEmpty()}">
                                 <label class="text-white">Immagine attuale:</label><br>
-                                <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-journalistImage" alt="actualJournalistImage"/><!--id="actualChefImage"-->
-                                <!--<input type="hidden" name="removeImage" value="false"/>-->
-                                <!--<button type="button" class="btn btn-secondary btn-sm" onclick="settingsChangeImageChef(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>-->
+                                <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-journalistImage" alt="actualJournalistImage"/>
                             </div>
                         </div>
                     </div>

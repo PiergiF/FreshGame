@@ -40,7 +40,16 @@
                                     <a th:href="@{ '/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }">Impostazioni</a>
                                 </li>
                                 <li>
-                                    <a href="#">Recensioni</a>
+                                    <a href="/journalist/personalPage">Pagina Personale</a>
+                                </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -82,6 +91,7 @@
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
 
@@ -89,18 +99,18 @@
             <h1 th:text="${article.title}" class="text-white text-center">_titleArticle_</h1>
             <h4 th:text="${article.introduction}" class="text-gray" style="word-wrap: break-word; margin: 10px;">_introductionArticle_</h4>
             <img th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}" 
-            th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " alt="Article Cover"  class="principal-image-article" style="margin-top: 10px;"/> <!-- class="d-block w-100" class momentanea-->
+            th:src=" 'data:image/;base64,' + ${article.imagesBase64[0]} " alt="Article Cover"  class="principal-image-article" style="margin-top: 10px;"/>
             
             <div style="padding-left: 20%; margin-top: 10px;">
-                <span th:each=" tag : ${article.tags}" ><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } " >_tag_</a>&emsp;</span> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
+                <span th:each=" tag : ${article.tags}" ><a th:class=" 'decoration-test-none ' + 'text-white-hover ' + 'category-' + ${tag} " th:text="#{ ${tag} } " >_tag_</a>&emsp;</span>
             </div>
 
             <div>
-                <h4><a th:href="@{ '/all/gamePage/' + ${article.game.id} }" class="custom-link-game-article" th:text="${article.game.name}">_gameName_</a></h4> <!--th:class=" 'text-white ' +" th:text=" + '&emsp;'"-->
+                <h4><a th:href="@{ '/all/gamePage/' + ${article.game.id} }" class="custom-link-game-article" th:text="${article.game.name}">_gameName_</a></h4>
             </div>
 
             <div class="important-text-container" style="margin: 10px;">
-                <h5 th:text="${article.body}" class="rating-container">_bodyArticle_</h5> <!--class="text-white"-->
+                <h5 th:text="${article.body}" class="rating-container">_bodyArticle_</h5>
             </div>
 
             <div id="articleCarousel" class="carousel slide" data-ride="carousel" th:unless="${article.imagesBase64 == null || article.imagesBase64.isEmpty()}">
@@ -110,12 +120,7 @@
                 </ol>
                 <div class="carousel-inner">
                     <div th:each="image, iterStat : ${article.imagesBase64}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                        <!--<a th:href="@{'/all/articlePage/' + ${article.id} }">-->
-                            <img th:src=" 'data:image/;base64,' + ${image}" class="d-block w-100 carousel-image" th:alt="${article.title}" />
-                        <!--</a>-->
-                        <!--<div class="carousel-caption d-none d-md-block">
-                            <h5 th:text="${article.title}">Titolo Articolo</h5>
-                        </div>-->
+                        <img th:src=" 'data:image/;base64,' + ${image}" class="d-block w-100 carousel-image" th:alt="${article.title}" />
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#articleCarousel" role="button" data-slide="prev">
@@ -128,30 +133,16 @@
                 </a>
             </div>
 
-            <div class="rating-container" th:if="${isReview}" style="margin-top: 10px;"> <!--class="col-md-6" serve?-->
-
-                
-                    <div class="row">
-                        <div class="col text-center">
-                            <p th:text="@{ ${article.journalist.name} + ' ' + ${article.journalist.surname} + ' - FRESHGAMES ' }">_nameJournalist-FRESHGAMES_</p>
-                            <p class="rating freshGame" th:if="${reviewValueIsZero}">0.0</p>
-                            <p class="rating freshGame" th:if="${reviewValue}" th:text="${reviewValue}">_valueReview_</p> <!--th:each="review : ${game.reviews}" th:if="${review.journalist != null}" th:text="${review.value}"-->
-                            <p class="rating freshGame" th:if="${reviewValue == null}">S.V.</p> <!--th:unless="${averageJournalistReviewsValue}-->
-                        </div>
+            <div class="rating-container" th:if="${isReview}" style="margin-top: 10px;">    
+                <div class="row">
+                    <div class="col text-center">
+                        <p th:text="@{ ${article.journalist.name} + ' ' + ${article.journalist.surname} + ' - FRESHGAMES ' }">_nameJournalist-FRESHGAMES_</p>
+                        <p class="rating freshGame" th:if="${reviewValueIsZero}">0.0</p>
+                        <p class="rating freshGame" th:if="${reviewValue}" th:text="${reviewValue}">_valueReview_</p>
+                        <p class="rating freshGame" th:if="${reviewValue == null}">S.V.</p>
                     </div>
-
-                    <!--<div class="row slider-container" th:if="${loggedJournalistReview}">
-                        <div class="col">
-                            <form th:action="@{ '/logged/reviewData/' + ${game.id} }" th:object="${loggedJournalistReview}" method="post" id="reviewForm">
-                                <input type="range" class="custom-slider"  min="0" max="10"  step="0.1" th:field="${loggedJournalistReview.value}"  oninput="updateRating(this.value)" onchange="submitRating(this.value)">
-                                <input type="hidden" name="updateReview" value=true />
-                                <input type="hidden" name="updateReviewId" th:value="${loggedJournalistReview.id}" />
-                            </form>
-                        </div>
-                    </div>-->
-
+                </div>
             </div>
-
         </div>
     </body>
 </html>

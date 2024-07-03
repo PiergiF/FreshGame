@@ -66,6 +66,15 @@
                                 <li>
                                     <a href="/journalist/personalPage">Pagina Personale</a>
                                 </li>
+                                <li th:if="${accountRole == 'JOURNALIST'}">
+                                    <a href="/journalist/createArticlePage">Crea Articolo</a>
+                                </li>
+                                <li th:if="${ accountRole == 'JOURNALIST' || accountRole == 'EDITOR'}">
+                                    <a href="/journalist_editor/addGamePage"> Aggiungi un gioco</a>
+                                </li>
+                                <li th:if="${ accountRole == 'EDITOR' }">
+                                    <a href="/all/allJournalistPage"> Tutti i giornalisti</a>
+                                </li>
 
                                 <li><hr class="dropdown-divider"></li>
 
@@ -106,6 +115,7 @@
                         </ul>
                     </li>
                 </ul>
+
             </nav>
         </div>
 
